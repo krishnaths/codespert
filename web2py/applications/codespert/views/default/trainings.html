@@ -1,0 +1,88 @@
+{{extend 'layout.html'}}
+<script type="text/javascript">
+$(document).ready(function(){
+$('a').click(function(){
+	if($(this).text() == "Perl")
+	{
+	$("#dvPerl").attr("visibility","visible");
+	$("#dvPerl").attr("display","block");
+	$("#dvFrames").html($("#dvPerl").html());
+	}
+	else if($(this).text() == "Python"){
+	console.log("python code");
+	$("#dvPython").attr("visibility","visible");
+        $("#dvPython").attr("display","block");
+        $("#dvFrames").html($("#dvPython").html());
+	}
+	else if($(this).text() == "Java"){
+	$("#dvJava").attr("visibility","visible");
+        $("#dvJava").attr("display","block");
+        $("#dvFrames").html($("#dvJava").html());
+	}
+	else if($(this).text() == "Unix"){
+        $("#dvUnix").attr("visibility","visible");
+        $("#dvUnix").attr("display","block");
+        $("#dvFrames").html($("#dvUnix").html());
+        }
+	else if($(this).text() == "Csharp"){
+        $("#dvCsharp").attr("visibility","visible");
+        $("#dvCsharp").attr("display","block");
+        $("#dvFrames").html($("#dvCsharp").html());
+        }
+
+
+});
+});
+</script>
+<B><I>Which language would u like to learn?</I></B>
+<table>
+<tr>
+<!-- <td><a href={{=URL('default','trainings/python')}}>Python</a></td> -->
+<td><a onmouseover="" style="cursor: pointer;">Python</td>
+<!-- <td><a href="{{=URL('default','trainings/perl')}}">Perl</a></td> -->
+<td><a onmouseover="" style="cursor: pointer;">Perl</a></td>
+<!-- <td><a href="{{=URL('default','trainings/java')}}">Java</a></td> -->
+<td><a onmouseover="" style="cursor: pointer;">Java</a></td>
+<!-- <td><a href="{{=URL('default','trainings/csharp')}}">C#</a></td> -->
+<td><a onmouseover="" style="cursor: pointer;">Csharp</a></td>
+<!--<td><a href="{{=URL('default','trainings/unix')}}">Unix</a></td>-->
+<td><a onmouseover="" style="cursor: pointer;">Unix</a></td>
+</tr>
+</table>
+
+<div id=dvPerl style="visibility:hidden;display:none">
+<iframe width="300" height="200" src="http://www.youtube.com/embed/hrRV8Uj4y0o?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+<br/>
+<br/>
+<iframe width="300" height="200" src="http://www.youtube.com/embed/Nma5gVDIwtc?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+</div>
+<div id="dvPython" style="visibility:hidden;display:none">
+<iframe width="300" height="200" src="http://www.youtube.com/embed/Nc16qeGBtMU?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+<br/>
+<br/>
+<iframe width="300" height="200" src="http://www.youtube.com/embed/tKTZoB2Vjuk?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+</div>
+<div id="dvJava" style="visibility:hidden;display:none">
+<iframe width="300" height="200" src="http://www.youtube.com/embed/Cfd9DOnuF9w?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+<br/>
+<br/>
+<iframe width="300" height="200" src="http://www.youtube.com/embed/3u1fu6f8Hto?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+</div>
+<div id="dvCsharp" style="visibility:hidden;display:none">
+<iframe width="300" height="200" src="http://www.youtube.com/embed/OBsGRqXzOhk?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+<br/>
+<br/>
+<iframe width="300" height="200" src="http://www.youtube.com/embed/ewZTqSJj9jQ?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+</div>
+<div id="dvUnix" style="visibility:hidden;display:none">
+<iframe width="300" height="200" src="http://www.youtube.com/embed/2O5XPNLQe30?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+<br/>
+<br/>
+<iframe width="300" height="200" src="http://www.youtube.com/embed/G8vusfYhwgQ?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+</div>
+<div id="dvFrames">
+
+
+
+</div>
+
