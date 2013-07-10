@@ -1,0 +1,39 @@
+<html>
+<head>
+	<style>
+	.no-audio #audio {
+		display: none;
+		}
+	.audio #audio input[type="button"] {
+		width: 45px;
+		height: 29px;
+		background: url(button.png);
+		border: 0px solid #000;
+		float: left;
+		margin-right: 10px;
+		}
+	</style>
+	<script src="js/modernizr-1.6.min.js"></script>
+	<script>
+	if (Modernizr.audio){
+		function PlayPause(){
+			var myAudio = document.getElementsByTagName('audio')[0];
+			if(myAudio.paused)
+				myAudio.play();
+			else
+				myAudio.pause();
+		}
+	}
+	</script>
+	</head>
+	<body>
+		<img src="facebook.png"alt="Veil &amp;, Subdue:Courtship of the Black Sultan"/>
+		<div id="audio">
+			<audio>
+				<source src="Tamil.mp3">
+			</audio>
+		</p><input type="button" onclick="PlayPause()" value=" " tabindex="0"/>
+		&ldquo;Tuen the Page&rdquo; / <em>Veil &amp; Subdue</em> /Paul Ramey </p>
+	</div>
+	</body>
+</html>
