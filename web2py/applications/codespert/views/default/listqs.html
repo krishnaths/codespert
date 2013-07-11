@@ -1,0 +1,9 @@
+{{extend 'layout.html'}}
+<label style="font-family:COMIC SANS MS"><h1><I>List of Questions that u have asked.</I></h1></label>
+<table>
+{{for qst in quests:}}
+<tr><td style="color:rgb(8, 48, 71);font-family:cursive">{{=qst}}</td></tr>
+{{pass}}
+</table>
+
+

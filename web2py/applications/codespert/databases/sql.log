@@ -53,3 +53,26 @@ CREATE TABLE auth_cas(
     renew CHAR(1)
 );
 success!
+timestamp: 2013-07-10T22:18:51.734581
+CREATE TABLE UsrQst(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    usrid CHAR(512),
+    question TEXT
+);
+success!
+timestamp: 2013-07-11T15:05:26.341646
+CREATE TABLE Answer(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    qid CHAR(512),
+    answer TEXT
+);
+success!
+timestamp: 2013-07-11T15:24:46.494017
+CREATE TABLE Codes(
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    qid CHAR(512),
+    Code TEXT
+);
+success!
+timestamp: 2013-07-11T16:35:44.117456
+ALTER TABLE Answer ADD byid CHAR(512);

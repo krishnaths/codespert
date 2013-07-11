@@ -1,0 +1,23 @@
+{{extend 'layout.html'}}
+<section>
+<label style="font-family:COMIC SANS MS;">Question</lable>
+<p style="font-family:COMIC SANS MS;font-size:30">{{=qstion}}</p>
+<label for="cdcode" style="font-family:cursive">Code</label>
+<p>
+{{if code == None or code == "":}}
+<code>No code submitted for review</code>
+{{else:}}
+<code id="cdcode">{{=code}}</code>
+{{pass}}
+</section>
+</p>
+<section>
+{{for answerer in answerers:}}
+<p>
+<details open="open">
+<summary style="font-family:cursive">Answered by {{=answerer.auth_user.first_name}}</summary>
+<kbd><p style="font-family:COMIC SANS MS"><mark style="background-color:#edf0f5">{{=answerer.Answer.answer}}</mark></p>
+</details>
+</p>
+{{pass}}
+</section>

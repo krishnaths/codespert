@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+<label style="font-family:COMIC SANS MS"><h1><I>Welcome to Codespert.</I></h1></label>
+<input list="browsers" name="browser">
+<datalist id="browsers">
+  <option value="Internet Explorer">
+  <option value="Firefox">
+  <option value="Chrome">
+  <option value="Opera">
+  <option value="Safari">
+</datalist>
+{{=BEAUTIFY(response._vars)}}
