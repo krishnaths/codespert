@@ -1,4 +1,56 @@
 {{extend 'layout.html'}}
+
+<script>
+
+$(document).ready(function(){
+    $('#txtAnswers').css("height","100");
+    $('#txtAnswers').css("width","1000");
+    $('#txtAnswers').attr("maxlength","2000");
+    $('#txtAnswers').attr("class","noTextClear");
+    
+    
+    
+$('#btnsubmit').click(function(){
+	
+	console.log('new' + ($('textarea#txtAnswers').val()).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '<br />'));
+        value = ($('textarea#txtAnswers').val()).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '<br />');
+	var hid = $('#hdnqid').val();
+        console.log($("#frmAnswer").attr("id"));
+        $.ajax({
+           type: "POST",
+           url: window.location.origin+"/codespert/default/answer/"+hid,
+           data: $("#frmAnswer").serialize(), // serializes the form's elements.
+           success: function(data)
+           {
+               
+               if (data == "True"){
+                   console.log('data is '+ data);
+                   console.log('created an entry');
+                   $('#secAnswers').append('<details open="open"><summary style="font-family:cursive">Answered by '+$("#hdnqusrnm").val()+'</summary>');
+                   $('#secAnswers').append('<span style="font-family:COMIC SANS MS;width:1000px;display:block"><mark style="background-color:#edf0f5"><pre>'+value+'</pre></mark></span>');
+                   $('textarea#txtAnswers').val("  ");
+                   }
+               else{
+                       console.log('error occured while inserting data')
+                   }
+               
+           },
+           error:function(data, errorThrown){
+               console.log('error occured');
+               }
+         });
+        
+        console.log('after log');
+	
+});
+});
+
+</script>
+
+
+{{if qstion == "":}}
+<p "font-family:COMIC SANS MS;font-size:30"><code>Question Not Found</code></p>
+{{else:}}
 <section>
 <label style="font-family:COMIC SANS MS;">Question</lable>
 <p style="font-family:COMIC SANS MS;font-size:30">{{=qstion}}</p>
@@ -12,12 +64,26 @@
 </section>
 </p>
 <section>
+<div  id="secAnswers">
 {{for answerer in answerers:}}
 <p>
 <details open="open">
 <summary style="font-family:cursive">Answered by {{=answerer.auth_user.first_name}}</summary>
-<kbd><p style="font-family:COMIC SANS MS"><mark style="background-color:#edf0f5">{{=answerer.Answer.answer}}</mark></p>
+<span style="font-family:COMIC SANS MS;width:1000px;display:block"><mark style="background-color:#edf0f5">{{=PRE(answerer.Answer.answer)}}</mark></span>
 </details>
 </p>
 {{pass}}
+</div>
 </section>
+<section>
+<label style="font-family:COMIC SANS MS;">Answers</label>
+
+<!--<textarea id="txtarea" width="10px" placeholder="Your answer here please"></textarea>
+</section>
+<button height="10px" width="10px">post</button>-->
+{{=form}}
+<input type="hidden" id="hdnqid" value={{=qid}}>
+<input type="hidden" id="hdnqusrnm" value={{=usrnm}}>
+{{pass}}
+
+

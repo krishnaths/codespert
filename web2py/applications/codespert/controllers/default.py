@@ -10,26 +10,64 @@
 #########################################################################
 from Tkinter import *
 import tkMessageBox
+import logging
+
+def insertanswer():
+    
+    qid = request.args(0)
+    answer = request.args(1)
+    byid = auth.user.id
+    
+    #db.Answer.insert(qid=qid,answer=answer,byid=byid)
+    return True
 
 def answer():
-    qstion = db(db.UsrQst.id == 1).select(db.UsrQst.question)
-    answers = db(db.Answer.qid == 1).select(db.Answer.answer)
-    answerers = db(db.Answer.qid == 1)(db.Answer.byid == db.auth_user.id).select(db.Answer.answer,db.auth_user.first_name) 
-#    tkMessageBox.showinfo("",answerers)
-    codes = db(db.Codes.qid == 1).select(db.Codes.Code)
     
+    qstion = db(db.UsrQst.id == request.args(0)).select(db.UsrQst.question)
+    quest = ""
+    for qst in qstion:
+	#tkMessageBox.showinfo("hi"+qst.question)
+	quest = qst.question
+    answers = db(db.Answer.qid == request.args(0)).select(db.Answer.answer)
+    answerers = db(db.Answer.qid == request.args(0))(db.Answer.byid == db.auth_user.id).select(db.Answer.answer,db.auth_user.first_name) 
+    codes = db(db.Codes.qid == request.args(0)).select(db.Codes.Code)
+    script=""
+    qst=[]
     for code in codes:
-#	tkMessageBox.showinfo(code.Code)
 	script = code.Code
-    
+    #tkMessageBox.showinfo(codes)
 
     for answer in answers:
+	#tkMessageBox.showinfo(answer)
+
 	pass
-	#tkMessageBox.showinfo(answer.answer)
-    for qst in qstion:
-#	tkMessageBox.showinfo(qst.question)
-        qstion = qst.question
-    return dict(qstion=qst.question,code=script,answers=answers,answerers=answerers)
+
+    form=FORM(TEXTAREA(_id="txtAnswers",_placeholder="Your answers here please",_name="txtAns",requires=IS_NOT_EMPTY()),BR(),INPUT(_type="button",_id="btnsubmit",_value="Post"))
+    form['_id'] = "frmAnswer"
+    
+    if form.accepts(request,session):
+	try:
+            tkMessageBox.showinfo("inside post")        
+            valText = form.vars.txtAns.replace('/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g', '<br />')
+            
+            ret = db.Answer.insert(qid=request.args(0),answer=valText,byid=auth.user.id)
+            if ret >=1 :
+                response.flash = "An error occured while creating the post"
+                return True
+                pass
+            else:
+                response.flash = "An error occured while creating the post"
+                return False
+            
+        except ValueError:
+            pass
+        
+	   
+	
+    if qst ==  "":
+        return dict(qstion="")
+    else:
+        return dict(usrnm=auth.user.first_name.lower(),qid=request.args(0),qstion=quest,code=script,answers=answers,answerers=answerers,form=form)
 
 def home():
     return dict()
@@ -37,10 +75,12 @@ def home():
 def listqs():
     quests = db(db.UsrQst.usrid == 1).select(db.UsrQst.ALL)
     questions = []
+    qids = []
     for qst in quests:
         questions.append(qst.question)
-    tkMessageBox.showinfo("hi",questions);        
-    return dict(quests = questions)
+	qids.append(qst.id)
+    #return dict(quests = questions,qids=qids)
+    return dict(quests=quests)
      
 
 def trainings():
