@@ -1,7 +1,9 @@
 {{extend 'layout.html'}}
-
+	
+              
+			
+			
 <script>
-
 $(document).ready(function(){
     $('#txtAnswers').css("height","100");
     $('#txtAnswers').css("width","1000");
@@ -10,27 +12,55 @@ $(document).ready(function(){
     
     
     
-$('#btnsubmit').click(function(){
+$('#btnsubmit').click(function(e){
 	
-	console.log('new' + ($('textarea#txtAnswers').val()).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '<br />'));
-        value = ($('textarea#txtAnswers').val()).replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '<br />');
+	e.preventDefault();
+        
+        value = ($('textarea#txtAnswers').val());//.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '<br />');
+        
+        
 	var hid = $('#hdnqid').val();
-        console.log($("#frmAnswer").attr("id"));
+
+        
+
+        var pret = $("<pre></pre>").text(value);
+                   var spn = $("<span></span>").html(pret);
+                   spn.attr("style","display:block;width:900px;");
+                   var summ = $("<summary></summary>").text('Answered by '+$("#hdnqusrnm").val());
+		   summ.attr("class","showup");
+                   summ.append(spn);
+                   var det = $("<details></details>").html(summ);
+                   $('#secAnswers').append(det);
+        $('textarea#txtAnswers').val("  ");
+        
+        console.log('v is '+value);
+        
         $.ajax({
            type: "POST",
-           url: window.location.origin+"/codespert/default/answer/"+hid,
-           data: $("#frmAnswer").serialize(), // serializes the form's elements.
+           url:window.location.origin+"/codespert/default/insertanswer/"+$('#hdnqid').val(),
+           
+           data: value, // serializes the form's elements.
            success: function(data)
            {
                
                if (data == "True"){
                    console.log('data is '+ data);
                    console.log('created an entry');
-                   $('#secAnswers').append('<details open="open"><summary style="font-family:cursive">Answered by '+$("#hdnqusrnm").val()+'</summary>');
-                   $('#secAnswers').append('<span style="font-family:COMIC SANS MS;width:1000px;display:block"><mark style="background-color:#edf0f5"><pre>'+value+'</pre></mark></span>');
-                   $('textarea#txtAnswers').val("  ");
+                   
+               //    var pret = $("<pre></pre>").text(value);
+                 //  var spn = $("<span></span>").html(pret);
+               //    spn.attr("style","display:block;width:900px;");
+                //   var summ = $("<summary></summary>").text('Answered by '+$("#hdnqusrnm").val());
+                //   summ.append(spn);
+                 //  var det = $("<details></details>").html(summ);
+                 //  $('#secAnswers').append(det);
+                   
+                   //$('#secAnswers').append('<p><details open="open"><summary style="font-family:cursive">Answered by '+$("#hdnqusrnm").val()+'</summary>');
+                   //$('#secAnswers').append('<span style="font-family:COMIC SANS MS;width:900px;display:block"><pre>'+value+'</pre></span></details></p>');
+                  // $('textarea#txtAnswers').val("  ");
                    }
                else{
+                       console.log('else data is '+data)
                        console.log('error occured while inserting data')
                    }
                
@@ -52,14 +82,14 @@ $('#btnsubmit').click(function(){
 <p "font-family:COMIC SANS MS;font-size:30"><code>Question Not Found</code></p>
 {{else:}}
 <section>
-<label style="font-family:COMIC SANS MS;">Question</lable>
-<p style="font-family:COMIC SANS MS;font-size:30">{{=qstion}}</p>
+<label style="color:#FFF;font-family:COMIC SANS MS;">Question</lable>
+<p style="color:#FFF;font-family:COMIC SANS MS;font-size:30">{{=qstion}}</p>
 <label for="cdcode" style="font-family:cursive">Code</label>
 <p>
 {{if code == None or code == "":}}
 <code>No code submitted for review</code>
 {{else:}}
-<code id="cdcode">{{=code}}</code>
+<pre style="width:250"><code id="cdcode" style = "width:250">{{=code}}</code></pre>
 {{pass}}
 </section>
 </p>
@@ -67,9 +97,9 @@ $('#btnsubmit').click(function(){
 <div  id="secAnswers">
 {{for answerer in answerers:}}
 <p>
-<details open="open">
-<summary style="font-family:cursive">Answered by {{=answerer.auth_user.first_name}}</summary>
-<span style="font-family:COMIC SANS MS;width:1000px;display:block"><mark style="background-color:#edf0f5">{{=PRE(answerer.Answer.answer)}}</mark></span>
+<details open="open" class="showup">
+<summary style="font-family:cursive" class="showup">Answered by {{=answerer.auth_user.first_name}}</summary>
+<span style="font-family:COMIC SANS MS;width:900px;display:block"><mark style="background-color:#edf0f5">{{=PRE(answerer.Answer.answer)}}</mark></span>
 </details>
 </p>
 {{pass}}
@@ -77,7 +107,6 @@ $('#btnsubmit').click(function(){
 </section>
 <section>
 <label style="font-family:COMIC SANS MS;">Answers</label>
-
 <!--<textarea id="txtarea" width="10px" placeholder="Your answer here please"></textarea>
 </section>
 <button height="10px" width="10px">post</button>-->
@@ -85,5 +114,4 @@ $('#btnsubmit').click(function(){
 <input type="hidden" id="hdnqid" value={{=qid}}>
 <input type="hidden" id="hdnqusrnm" value={{=usrnm}}>
 {{pass}}
-
 

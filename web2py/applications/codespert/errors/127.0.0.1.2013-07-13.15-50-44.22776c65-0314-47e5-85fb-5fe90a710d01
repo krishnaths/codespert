@@ -1,0 +1,441 @@
+(dp1
+S'output'
+p2
+S"<type 'exceptions.AttributeError'> 'Auth' object has no attribute 'usr'"
+p3
+sS'layer'
+p4
+S'/home/krishnath/codespert/web2py/applications/codespert/controllers/default.py'
+p5
+sS'code'
+p6
+S'# -*- coding: utf-8 -*-\n# this file is released under public domain and you can use without limitations\n\n#########################################################################\n## This is a sample controller\n## - index is the default action of any application\n## - user is required for authentication and authorization\n## - download is for downloading files uploaded in the db (does streaming)\n## - call exposes all registered services (none by default)\n#########################################################################\nfrom gluon.tools import Mail\nfrom Tkinter import *\nimport tkMessageBox\nimport logging\n\n@auth.requires_login()\ndef mailit(qid,byid):\n    mail = Mail()\n    mail.settings.server = \'smtp.gmail.com:587\'\n    mail.settings.sender = \'evtmng@gmail.com\'\n    mail.settings.tls = True\n    mail.settings.login = \'evtmng@gmail.com:th1s1smypass\'\n    usrnm = db(db.auth_user.id == byid).select(db.auth_user.first_name)\n    tkMessageBox.showinfo("asd"+str(usrnm))\n    Message = "One of your questions has been answered by "#+usrnm \n    #.Please click the link below.\\nhttp://127.0.0.1:8000/codespert/default/answer/"+str(qid)"+\\n\\nregards\\nCodespert Team"\n\n    var = mail.send(\'sankaran458@gmail.com\', \'hello\',Message)\n\n    if var == 1:\n\n        #redirect(URL(\'invite?eid=\'+evnt_Id))\n        #response.flash = T("Invitation mail sent successfully")\n        #session.flash = T("Invitation")\n        pass\n    else:\n        response.flash = "We are facing some issues.We are working on it"\n    return var\n\n@auth.requires_login()\ndef insertanswer():\n    try:\n        #tkMessageBox.showinfo("hiads"+request.body.read())\n        ans = request.body.read()\n        ans = ans.replace(\'/([^>\\r\\n]?)(\\r\\n|\\n\\r|\\r|\\n)/g\', \'<br />\')\n        tkMessageBox.showinfo("inserting data"+str(ans))            \n        ret = db.Answer.insert(qid=request.args(0),answer=ans,byid=auth.user.id)\n\ttkMessageBox.showinfo("inside post"+str(ret))\n\t\n        if ret >=1 :\n            \n\t    #mailit(request.args(0),byid)\n            mail = Mail()\n            mail.settings.server = \'smtp.gmail.com:587\'\n            mail.settings.sender = \'evtmng@gmail.com\'\n            mail.settings.tls = True\n            mail.settings.login = \'evtmng@gmail.com:th1s1smypass\'\n            usrnm = db(db.auth_user.id == auth.usr.id).select(db.auth_user.first_name)\n            #Message = "One of your questions has been answered by "#+usrnm \n            \n\n            #var = mail.send(\'sankaran458@gmail.com\', \'hello\',Message)\n\n##            if var == 1:\n##                \n##                pass\n##            else:\n##                response.flash = "We are facing some issues.We are working on it"\n\n            response.flash = "created post"\n            return True\n        else:\n            response.flash = "An error occured while creating the post"\n            return False\n            \n    except ValueError:\n            pass\n    return True\n\n@auth.requires_login()\ndef answer():\n    \n    qstion = db(db.UsrQst.id == request.args(0)).select(db.UsrQst.question)\n    quest = ""\n    for qst in qstion:\n\t#tkMessageBox.showinfo("hi"+qst.question)\n\tquest = qst.question\n    answers = db(db.Answer.qid == request.args(0)).select(db.Answer.answer)\n    answerers = db(db.Answer.qid == request.args(0))(db.Answer.byid == db.auth_user.id).select(db.Answer.answer,db.auth_user.first_name) \n    codes = db(db.Codes.qid == request.args(0)).select(db.Codes.Code)\n    script=""\n    qst=[]\n    for code in codes:\n\tscript = code.Code\n    #tkMessageBox.showinfo(codes)\n\n    for answer in answers:\n\t#tkMessageBox.showinfo(answer)\n\n\tpass\n\n    form=FORM(TEXTAREA(_id="txtAnswers",_placeholder="Your solution here",_name="txtAns",requires=IS_NOT_EMPTY()),BR(),INPUT(_type="submit",_id="btnsubmit",_value="Post"))\n    form[\'_id\'] = "frmAnswer"\n    \n    if form.accepts(request,session):\n\ttry:\n            tkMessageBox.showinfo("inside post")        \n            valText = form.vars.txtAns.replace(\'/([^>\\r\\n]?)(\\r\\n|\\n\\r|\\r|\\n)/g\', \'<br />\')\n            \n            ret = db.Answer.insert(qid=request.args(0),answer=valText,byid=auth.user.id)\n            if ret >=1 :\n                response.flash = "An error occured while creating the post"\n                return True\n                pass\n            else:\n                response.flash = "An error occured while creating the post"\n                return False\n            \n        except ValueError:\n            pass\n        \n\t   \n\t\n    if qst ==  "":\n        return dict(qstion="")\n    else:\n        return dict(usrnm=auth.user.first_name.lower(),qid=request.args(0),qstion=quest,code=script,answers=answers,answerers=answerers,form=form)\n\ndef home():\n    return dict()\n\n@auth.requires_login()\ndef listqs():\n    #quests = db(db.UsrQst.usrid == 1).select(db.UsrQst.ALL)\n    quests = db().select(db.UsrQst.ALL)\n    questions = []\n    qids = []\n    for qst in quests:\n        questions.append(qst.question)\n\tqids.append(qst.id)\n    #return dict(quests = questions,qids=qids)\n    return dict(quests=quests)\n     \n@auth.requires_login()\ndef trainings():\n    if request.args(0) == \'\' or request.args(0) == \'None\':\n\treturn dict(message=\'python\')\n    else :\n\n\treturn dict(message=request.args(0))\n\n@auth.requires_login()\ndef index():\n    """\n    example action using the internationalization operator T and flash\n    rendered by views/default/index.html or views/generic.html\n\n    if you need a simple wiki simple replace the two lines below with:\n    return auth.wiki()\n    """\n    response.flash = T("Welcome to web2py!")\n    return dict(message=T(\'Hello World\'))\n\n\ndef user():\n    """\n    exposes:\n    http://..../[app]/default/user/login\n    http://..../[app]/default/user/logout\n    http://..../[app]/default/user/register\n    http://..../[app]/default/user/profile\n    http://..../[app]/default/user/retrieve_password\n    http://..../[app]/default/user/change_password\n    http://..../[app]/default/user/manage_users (requires membership in \n    use @auth.requires_login()\n        @auth.requires_membership(\'group name\')\n        @auth.requires_permission(\'read\',\'table name\',record_id)\n    to decorate functions that need access control\n    """\n    return dict(form=auth())\n\n@cache.action()\ndef download():\n    """\n    allows downloading of uploaded files\n    http://..../[app]/default/download/[filename]\n    """\n    return response.download(request, db)\n\n\ndef call():\n    """\n    exposes services. for example:\n    http://..../[app]/default/call/jsonrpc\n    decorate with @services.jsonrpc the functions to expose\n    supports xml, json, xmlrpc, jsonrpc, amfrpc, rss, csv\n    """\n    return service()\n\n\n@auth.requires_signature()\ndef data():\n    """\n    http://..../[app]/default/data/tables\n    http://..../[app]/default/data/create/[table]\n    http://..../[app]/default/data/read/[table]/[id]\n    http://..../[app]/default/data/update/[table]/[id]\n    http://..../[app]/default/data/delete/[table]/[id]\n    http://..../[app]/default/data/select/[table]\n    http://..../[app]/default/data/search/[table]\n    but URLs must be signed, i.e. linked with\n      A(\'table\',_href=URL(\'data/tables\',user_signature=True))\n    or with the signed load operator\n      LOAD(\'default\',\'data.load\',args=\'tables\',ajax=True,user_signature=True)\n    """\n    return dict(form=crud())\n\nresponse._vars=response._caller(insertanswer)\n'
+p7
+sS'snapshot'
+p8
+(dp9
+S'exception'
+p10
+(dp11
+S'__hash__'
+p12
+S"<method-wrapper '__hash__' of exceptions.AttributeError object>"
+p13
+sS'__setattr__'
+p14
+S"<method-wrapper '__setattr__' of exceptions.AttributeError object>"
+p15
+sS'__reduce_ex__'
+p16
+S'<built-in method __reduce_ex__ of exceptions.AttributeError object>'
+p17
+sS'__getslice__'
+p18
+S"<method-wrapper '__getslice__' of exceptions.AttributeError object>"
+p19
+sS'__getitem__'
+p20
+S"<method-wrapper '__getitem__' of exceptions.AttributeError object>"
+p21
+sS'__setstate__'
+p22
+S'<built-in method __setstate__ of exceptions.AttributeError object>'
+p23
+sS'__reduce__'
+p24
+S'<built-in method __reduce__ of exceptions.AttributeError object>'
+p25
+sS'__str__'
+p26
+S"<method-wrapper '__str__' of exceptions.AttributeError object>"
+p27
+sS'__format__'
+p28
+S'<built-in method __format__ of exceptions.AttributeError object>'
+p29
+sS'__getattribute__'
+p30
+S"<method-wrapper '__getattribute__' of exceptions.AttributeError object>"
+p31
+sS'__class__'
+p32
+S"<type 'exceptions.AttributeError'>"
+p33
+sS'__unicode__'
+p34
+S'<built-in method __unicode__ of exceptions.AttributeError object>'
+p35
+sS'__delattr__'
+p36
+S"<method-wrapper '__delattr__' of exceptions.AttributeError object>"
+p37
+sS'__subclasshook__'
+p38
+S'<built-in method __subclasshook__ of type object>'
+p39
+sS'__repr__'
+p40
+S"<method-wrapper '__repr__' of exceptions.AttributeError object>"
+p41
+sS'args'
+p42
+S'("\'Auth\' object has no attribute \'usr\'",)'
+p43
+sS'__dict__'
+p44
+S'{}'
+p45
+sS'__sizeof__'
+p46
+S'<built-in method __sizeof__ of exceptions.AttributeError object>'
+p47
+sS'__doc__'
+p48
+S"'Attribute not found.'"
+p49
+sS'__init__'
+p50
+S"<method-wrapper '__init__' of exceptions.AttributeError object>"
+p51
+sS'__new__'
+p52
+S'<built-in method __new__ of type object>'
+p53
+ssS'evalue'
+p54
+S"'Auth' object has no attribute 'usr'"
+p55
+sS'request'
+p56
+cgluon.html
+XML_unpickle
+p57
+(S's\x11d\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top">ajax</td><td valign="top">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">application</td><td valign="top">:</td><td><div>codespert</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">args</td><td valign="top">:</td><td><div><table><tr><td><div>4</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">body</td><td valign="top">:</td><td><div>&lt;open file &#x27;&lt;fdopen&gt;&#x27;, mode &#x27;w+b&#x27; at 0xb4b9f078&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">cid</td><td valign="top">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">client</td><td valign="top">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">controller</td><td valign="top">:</td><td><div>default</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">cookies</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">session_id_admin</td><td valign="top">:</td><td><div>127.0.0.1-28d50fd3-92a4-4118-8973-745e1584e644<table><tr><td style="font-weight:bold;vertical-align:top">comment</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">domain</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">expires</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">httponly</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">max-age</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">path</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">secure</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">version</td><td valign="top">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_id_codespert</td><td valign="top">:</td><td><div>127.0.0.1-ee450d5a-ca37-42ee-aad9-ddd51d766700<table><tr><td style="font-weight:bold;vertical-align:top">comment</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">domain</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">expires</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">httponly</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">max-age</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">path</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">secure</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">version</td><td valign="top">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_id_welcome</td><td valign="top">:</td><td><div>127.0.0.1-0229ade7-1ef7-47a3-b3ef-266d737bdb44<table><tr><td style="font-weight:bold;vertical-align:top">comment</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">domain</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">expires</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">httponly</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">max-age</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">path</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">secure</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">version</td><td valign="top">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">env</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">app_folders</td><td valign="top">:</td><td><div>set([&#x27;/home/krishnath/codespert/web2py/applications/codespert/&#x27;, &#x27;/home/krishnath/codespert/web2py/applications/admin/&#x27;, &#x27;/home/krishnath/codespert/web2py/applications/welcome/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">applications_parent</td><td valign="top">:</td><td><div>/home/krishnath/codespert/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">cmd_args</td><td valign="top">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">cmd_options</td><td valign="top">:</td><td><div>&lt;Values at 0x8bb3f8c: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;127.0.1.1&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;krishnath-Inspiron-1525&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/home/krishnath/codespert/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;import_models&#x27;: False, &#x27;winservice&#x27;: &#x27;&#x27;, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;profiler_filename&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;scheduler_groups&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;interfaces&#x27;: None, &#x27;minthreads&#x27;: None, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">content_length</td><td valign="top">:</td><td><div>848</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">content_type</td><td valign="top">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">db_sessions</td><td valign="top">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">debugging</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">gluon_parent</td><td valign="top">:</td><td><div>/home/krishnath/codespert/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_accept</td><td valign="top">:</td><td><div>*/*</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_accept_encoding</td><td valign="top">:</td><td><div>gzip,deflate,sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_accept_language</td><td valign="top">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_connection</td><td valign="top">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_content_length</td><td valign="top">:</td><td><div>848</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_content_type</td><td valign="top">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_cookie</td><td valign="top">:</td><td><div>session_id_welcome=127.0.0.1-0229ade7-1ef7-47a3-b3ef-266d737bdb44; session_id_admin=127.0.0.1-28d50fd3-92a4-4118-8973-745e1584e644; session_id_codespert=127.0.0.1-ee450d5a-ca37-42ee-aad9-ddd51d766700</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_host</td><td valign="top">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_origin</td><td valign="top">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_referer</td><td valign="top">:</td><td><div>http://127.0.0.1:8000/codespert/default/answer/4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_user_agent</td><td valign="top">:</td><td><div>Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.63 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">http_x_requested_with</td><td valign="top">:</td><td><div>XMLHttpRequest</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">is_jython</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">is_pypy</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">local_hosts</td><td valign="top">:</td><td><div><table><tr><td><div>::1</div></td></tr><tr><td><div>127.0.1.1</div></td></tr><tr><td><div>krishnath-Inspiron-1525</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">path_info</td><td valign="top">:</td><td><div>/codespert/default/insertanswer/4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">query_string</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">remote_addr</td><td valign="top">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">remote_port</td><td valign="top">:</td><td><div>45846</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">request_method</td><td valign="top">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">request_uri</td><td valign="top">:</td><td><div>/codespert/default/insertanswer/4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">script_name</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">server_name</td><td valign="top">:</td><td><div>krishnath-Inspiron-1525</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">server_port</td><td valign="top">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">server_protocol</td><td valign="top">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">server_software</td><td valign="top">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">web2py_path</td><td valign="top">:</td><td><div>/home/krishnath/codespert/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">web2py_version</td><td valign="top">:</td><td><div>2.5.1-stable+timestamp.2013.06.06.15.39.19</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_errors</td><td valign="top">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0xb75270d0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_file_wrapper</td><td valign="top">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x8b51b9c&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_input</td><td valign="top">:</td><td><div>&lt;socket._fileobject object at 0xae797bac&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_multiprocess</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_multithread</td><td valign="top">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_run_once</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_url_scheme</td><td valign="top">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi_version</td><td valign="top">:</td><td><div><table><tr><td><div>1</div></td></tr><tr><td><div>0</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">extension</td><td valign="top">:</td><td><div>html</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">folder</td><td valign="top">:</td><td><div>/home/krishnath/codespert/web2py/applications/codespert/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">function</td><td valign="top">:</td><td><div>insertanswer</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">get_vars</td><td valign="top">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">global_settings</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">app_folders</td><td valign="top">:</td><td><div>set([&#x27;/home/krishnath/codespert/web2py/applications/codespert/&#x27;, &#x27;/home/krishnath/codespert/web2py/applications/admin/&#x27;, &#x27;/home/krishnath/codespert/web2py/applications/welcome/&#x27;])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">applications_parent</td><td valign="top">:</td><td><div>/home/krishnath/codespert/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">cmd_args</td><td valign="top">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">cmd_options</td><td valign="top">:</td><td><div>&lt;Values at 0x8bb3f8c: {&#x27;verbose&#x27;: False, &#x27;ip&#x27;: &#x27;127.0.0.1&#x27;, &#x27;with_scheduler&#x27;: False, &#x27;ips&#x27;: [&#x27;127.0.1.1&#x27;], &#x27;shutdown_timeout&#x27;: 5, &#x27;taskbar&#x27;: False, &#x27;with_coverage&#x27;: False, &#x27;port&#x27;: 8000, &#x27;maxthreads&#x27;: None, &#x27;softcron&#x27;: False, &#x27;server_name&#x27;: &#x27;krishnath-Inspiron-1525&#x27;, &#x27;bpython&#x27;: False, &#x27;nogui&#x27;: False, &#x27;pid_filename&#x27;: &#x27;httpserver.pid&#x27;, &#x27;extcron&#x27;: False, &#x27;runcron&#x27;: False, &#x27;run_system_tests&#x27;: False, &#x27;test&#x27;: None, &#x27;folder&#x27;: &#x27;/home/krishnath/codespert/web2py&#x27;, &#x27;config&#x27;: &#x27;&#x27;, &#x27;import_models&#x27;: False, &#x27;winservice&#x27;: &#x27;&#x27;, &#x27;shell&#x27;: None, &#x27;run&#x27;: &#x27;&#x27;, &#x27;log_filename&#x27;: &#x27;httpserver.log&#x27;, &#x27;debuglevel&#x27;: 30, &#x27;args&#x27;: [&#x27;&#x27;], &#x27;socket_timeout&#x27;: 5, &#x27;ssl_ca_certificate&#x27;: None, &#x27;scheduler&#x27;: None, &#x27;profiler_filename&#x27;: None, &#x27;ssl_private_key&#x27;: &#x27;&#x27;, &#x27;scheduler_groups&#x27;: None, &#x27;password&#x27;: &#x27;&lt;ask&gt;&#x27;, &#x27;request_queue_size&#x27;: 5, &#x27;ssl_certificate&#x27;: &#x27;&#x27;, &#x27;cronjob&#x27;: False, &#x27;numthreads&#x27;: None, &#x27;quiet&#x27;: False, &#x27;interfaces&#x27;: None, &#x27;minthreads&#x27;: None, &#x27;timeout&#x27;: 10, &#x27;plain&#x27;: False, &#x27;nobanner&#x27;: False}&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">db_sessions</td><td valign="top">:</td><td><div>set([])</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">debugging</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">gluon_parent</td><td valign="top">:</td><td><div>/home/krishnath/codespert/web2py</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">is_jython</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">is_pypy</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">local_hosts</td><td valign="top">:</td><td><div><table><tr><td><div>::1</div></td></tr><tr><td><div>127.0.1.1</div></td></tr><tr><td><div>krishnath-Inspiron-1525</div></td></tr><tr><td><div>::ffff:127.0.0.1</div></td></tr><tr><td><div>127.0.0.1</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">web2py_version</td><td valign="top">:</td><td><div>2.5.1-stable+timestamp.2013.06.06.15.39.19</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">is_https</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">is_local</td><td valign="top">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">is_restful</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">now</td><td valign="top">:</td><td><div>datetime.datetime(2013, 7, 13, 15, 50, 44, 167837)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">post_vars</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">mail </td><td valign="top">:</td><td><div> Mail()\n    mail.settings.server = &#x27;smtp.gmail.com:587&#x27;\n    mail.settings.sender = &#x27;evtmng@gmail.com&#x27;\n    mail.settings.tls = True\n    mail.settings.login = &#x27;evtmng@gmail.com:th1s1smypass&#x27;\n    usrnm = db(db.auth_user.id == byid).select(db.auth_user.first_name)\n    tkMessageBox.showinfo(&quot;asd&quot; str(usrnm))\n    Message = &quot;One of your questions has been answered by &quot;# usrnm \n    #.Please click the link below.\\nhttp://127.0.0.1:8000/codespert/default/answer/&quot; str(qid)&quot; \\n\\nregards\\nCodespert Team&quot;\n\n    var = mail.send(&#x27;sankaran458@gmail.com&#x27;, &#x27;hello&#x27;,Message)\n\n    if var == 1:\n\n        #redirect(URL(&#x27;invite?eid=&#x27; evnt_Id))\n        #response.flash = T(&quot;Invitation mail sent successfully&quot;)\n        #session.flash = T(&quot;Invitation&quot;)\n        pass\n    else:\n        response.flash = &quot;We are facing some issues.We are working on it&quot;\n    return var</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">raw_args</td><td valign="top">:</td><td><div>4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">raw_extension</td><td valign="top">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">url</td><td valign="top">:</td><td><div>/codespert/default/insertanswer/4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">utcnow</td><td valign="top">:</td><td><div>datetime.datetime(2013, 7, 13, 13, 50, 44, 167863)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">uuid</td><td valign="top">:</td><td><div>codespert/127.0.0.1.2013-07-13.15-50-44.22776c65-0314-47e5-85fb-5fe90a710d01</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">vars</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">mail </td><td valign="top">:</td><td><div> Mail()\n    mail.settings.server = &#x27;smtp.gmail.com:587&#x27;\n    mail.settings.sender = &#x27;evtmng@gmail.com&#x27;\n    mail.settings.tls = True\n    mail.settings.login = &#x27;evtmng@gmail.com:th1s1smypass&#x27;\n    usrnm = db(db.auth_user.id == byid).select(db.auth_user.first_name)\n    tkMessageBox.showinfo(&quot;asd&quot; str(usrnm))\n    Message = &quot;One of your questions has been answered by &quot;# usrnm \n    #.Please click the link below.\\nhttp://127.0.0.1:8000/codespert/default/answer/&quot; str(qid)&quot; \\n\\nregards\\nCodespert Team&quot;\n\n    var = mail.send(&#x27;sankaran458@gmail.com&#x27;, &#x27;hello&#x27;,Message)\n\n    if var == 1:\n\n        #redirect(URL(&#x27;invite?eid=&#x27; evnt_Id))\n        #response.flash = T(&quot;Invitation mail sent successfully&quot;)\n        #session.flash = T(&quot;Invitation&quot;)\n        pass\n    else:\n        response.flash = &quot;We are facing some issues.We are working on it&quot;\n    return var</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">environ</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">CONTENT_LENGTH</td><td valign="top">:</td><td><div>848</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">CONTENT_TYPE</td><td valign="top">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_ACCEPT</td><td valign="top">:</td><td><div>*/*</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_ACCEPT_ENCODING</td><td valign="top">:</td><td><div>gzip,deflate,sdch</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_ACCEPT_LANGUAGE</td><td valign="top">:</td><td><div>en-US,en;q=0.8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_CONNECTION</td><td valign="top">:</td><td><div>keep-alive</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_CONTENT_LENGTH</td><td valign="top">:</td><td><div>848</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_CONTENT_TYPE</td><td valign="top">:</td><td><div>application/x-www-form-urlencoded; charset=UTF-8</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_COOKIE</td><td valign="top">:</td><td><div>session_id_welcome=127.0.0.1-0229ade7-1ef7-47a3-b3ef-266d737bdb44; session_id_admin=127.0.0.1-28d50fd3-92a4-4118-8973-745e1584e644; session_id_codespert=127.0.0.1-ee450d5a-ca37-42ee-aad9-ddd51d766700</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_HOST</td><td valign="top">:</td><td><div>127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_ORIGIN</td><td valign="top">:</td><td><div>http://127.0.0.1:8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_REFERER</td><td valign="top">:</td><td><div>http://127.0.0.1:8000/codespert/default/answer/4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_USER_AGENT</td><td valign="top">:</td><td><div>Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.63 Safari/537.36</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">HTTP_X_REQUESTED_WITH</td><td valign="top">:</td><td><div>XMLHttpRequest</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">PATH_INFO</td><td valign="top">:</td><td><div>/codespert/default/insertanswer/4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">QUERY_STRING</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">REMOTE_ADDR</td><td valign="top">:</td><td><div>127.0.0.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">REMOTE_PORT</td><td valign="top">:</td><td><div>45846</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">REQUEST_METHOD</td><td valign="top">:</td><td><div>POST</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">REQUEST_URI</td><td valign="top">:</td><td><div>/codespert/default/insertanswer/4</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">SCRIPT_NAME</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">SERVER_NAME</td><td valign="top">:</td><td><div>krishnath-Inspiron-1525</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">SERVER_PORT</td><td valign="top">:</td><td><div>8000</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">SERVER_PROTOCOL</td><td valign="top">:</td><td><div>HTTP/1.1</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">SERVER_SOFTWARE</td><td valign="top">:</td><td><div>Rocket 1.2.6</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.errors</td><td valign="top">:</td><td><div>&lt;open file &#x27;&lt;stderr&gt;&#x27;, mode &#x27;w&#x27; at 0xb75270d0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.file_wrapper</td><td valign="top">:</td><td><div>&lt;class wsgiref.util.FileWrapper at 0x8b51b9c&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.input</td><td valign="top">:</td><td><div>&lt;open file &#x27;&lt;fdopen&gt;&#x27;, mode &#x27;w+b&#x27; at 0xb4b9f078&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.multiprocess</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.multithread</td><td valign="top">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.run_once</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.url_scheme</td><td valign="top">:</td><td><div>http</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">wsgi.version</td><td valign="top">:</td><td><div>1</div></td></tr></table></div></td></tr></table></div></td></tr></table></div>'
+tRp58
+sS'frames'
+p59
+(lp60
+(dp61
+S'file'
+p62
+S'/home/krishnath/codespert/web2py/gluon/restricted.py'
+p63
+sS'dump'
+p64
+(dp65
+S'environment'
+p66
+S"{'A': <class 'gluon.html.A'>, 'ACTIVE': 'active', 'ALL': 'all', 'ANCHOR': 'anchor', 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ARC': 'arc', 'At': <function At>, 'AtEnd': <function AtEnd>, 'AtInsert': <function AtInsert>, 'AtSelFirst': <function AtSelFirst>, ...}"
+p67
+sS'ccode'
+p68
+S'<code object <module> at 0xade22800, file "/home...tions/codespert/controllers/default.py", line 11>'
+p69
+ssS'lnum'
+p70
+I212
+sS'lines'
+p71
+(dp72
+I207
+S'    try:'
+p73
+sI208
+S'        if isinstance(code, types.CodeType):'
+p74
+sI209
+S'            ccode = code'
+p75
+sI210
+S'        else:'
+p76
+sI211
+S'            ccode = compile2(code, layer)'
+p77
+sI212
+S'        exec ccode in environment'
+p78
+sI213
+S'    except HTTP:'
+p79
+sI214
+S'        raise'
+p80
+sI215
+S'    except RestrictedError:'
+p81
+sI216
+S'        # do not encapsulate (obfuscate) the original RestrictedError'
+p82
+ssS'call'
+p83
+S"(code='# -*- coding: utf-8 -*-\\n# this file is released ...)\\n\\nresponse._vars=response._caller(insertanswer)\\n', environment={'A': <class 'gluon.html.A'>, 'ACTIVE': 'active', 'ALL': 'all', 'ANCHOR': 'anchor', 'ANY_OF': <class 'gluon.validators.ANY_OF'>, 'ARC': 'arc', 'At': <function At>, 'AtEnd': <function AtEnd>, 'AtInsert': <function AtInsert>, 'AtSelFirst': <function AtSelFirst>, ...}, layer='/home/krishnath/codespert/web2py/applications/codespert/controllers/default.py')"
+p84
+sS'func'
+p85
+S'restricted'
+p86
+sa(dp87
+g62
+S'/home/krishnath/codespert/web2py/applications/codespert/controllers/default.py'
+p88
+sg64
+(dp89
+sg70
+I218
+sg71
+(dp90
+I207
+S'    http://..../[app]/default/data/update/[table]/[id]'
+p91
+sI208
+S'    http://..../[app]/default/data/delete/[table]/[id]'
+p92
+sI209
+S'    http://..../[app]/default/data/select/[table]'
+p93
+sI210
+S'    http://..../[app]/default/data/search/[table]'
+p94
+sI211
+S'    but URLs must be signed, i.e. linked with'
+p95
+sI212
+S"      A('table',_href=URL('data/tables',user_signature=True))"
+p96
+sI213
+S'    or with the signed load operator'
+p97
+sI214
+S"      LOAD('default','data.load',args='tables',ajax=True,user_signature=True)"
+p98
+sI215
+S'    """'
+p99
+sI216
+S'    return dict(form=crud())'
+p100
+ssg83
+S'()'
+p101
+sg85
+S'<module>'
+p102
+sa(dp103
+g62
+S'/home/krishnath/codespert/web2py/gluon/globals.py'
+p104
+sg64
+(dp105
+S'self'
+p106
+S'undefined'
+p107
+sS'f'
+S'<function insertanswer>'
+p108
+ssg70
+I194
+sg71
+(dp109
+I192
+S"        self.delimiters = ('{{', '}}')"
+p110
+sI193
+S'        self._vars = None'
+p111
+sI194
+S'        self._caller = lambda f: f()'
+p112
+sI195
+S'        self._view_environment = None'
+p113
+sI196
+S'        self._custom_commit = None'
+p114
+sI197
+S'        self._custom_rollback = None'
+p115
+sI198
+S''
+sI189
+S'        self.menu = []             # used by the default view layout'
+p116
+sI190
+S'        self.files = []            # used by web2py_ajax.html'
+p117
+sI191
+S'        self.generic_patterns = []  # patterns to allow generic views'
+p118
+ssg83
+S'(f=<function insertanswer>)'
+p119
+sg85
+S'<lambda>'
+p120
+sa(dp121
+g62
+S'/home/krishnath/codespert/web2py/gluon/tools.py'
+p122
+sg64
+(dp123
+S'action'
+p124
+S'<function insertanswer>'
+p125
+sS'a'
+S'()'
+p126
+sS'b'
+g45
+ssg70
+I3022
+sg71
+(dp127
+I3017
+S'                    flag = condition'
+p128
+sI3018
+S'                if not flag:'
+p129
+sI3019
+S'                    current.session.flash = self.messages.access_denied'
+p130
+sI3020
+S'                    return call_or_redirect('
+p131
+sI3021
+S'                        self.settings.on_failed_authorization)'
+p132
+sI3022
+S'                return action(*a, **b)'
+p133
+sI3023
+S'            f.__doc__ = action.__doc__'
+p134
+sI3024
+S'            f.__name__ = action.__name__'
+p135
+sI3025
+S'            f.__dict__.update(action.__dict__)'
+p136
+sI3026
+S'            return f'
+p137
+ssg83
+S'(*a=(), **b={})'
+p138
+sg85
+S'f'
+sa(dp139
+g62
+S'/home/krishnath/codespert/web2py/applications/codespert/controllers/default.py'
+p140
+sg64
+(dp141
+S'db.auth_user.first_name'
+p142
+S'<gluon.dal.Field object>'
+p143
+sS'usrnm'
+p144
+g107
+sS'global auth'
+p145
+S'<gluon.tools.Auth object>'
+p146
+sS'db.auth_user'
+p147
+S'<Table auth_user (id,first_name,last_name,email,...stration_key,reset_password_key,registration_id)>'
+p148
+sS'auth.usr'
+p149
+g107
+sS'db.auth_user.id'
+p150
+S'<gluon.dal.Field object>'
+p151
+sS'global db'
+p152
+S'<DAL uri="sqlite://storage.sqlite">'
+p153
+ssg70
+I58
+sg71
+(dp154
+I53
+S'            mail = Mail()'
+p155
+sI54
+S"            mail.settings.server = 'smtp.gmail.com:587'"
+p156
+sI55
+S"            mail.settings.sender = 'evtmng@gmail.com'"
+p157
+sI56
+S'            mail.settings.tls = True'
+p158
+sI57
+S"            mail.settings.login = 'evtmng@gmail.com:th1s1smypass'"
+p159
+sI58
+S'            usrnm = db(db.auth_user.id == auth.usr.id).select(db.auth_user.first_name)'
+p160
+sI59
+S'            #Message = "One of your questions has been answered by "#+usrnm'
+p161
+sI60
+S''
+sI61
+S''
+sI62
+S"            #var = mail.send('sankaran458@gmail.com', 'hello',Message)"
+p162
+ssg83
+S'()'
+p163
+sg85
+S'insertanswer'
+p164
+sasS'pyver'
+p165
+S'Python 2.7.3: /usr/bin/python (prefix: /usr)'
+p166
+sS'session'
+p167
+g57
+(S's\xeb\x07\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top">auth</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">expiration</td><td valign="top">:</td><td><div>3600</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">hmac_key</td><td valign="top">:</td><td><div>7f31668a-c16b-4f02-89e7-d693b3760648</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">last_visit</td><td valign="top">:</td><td><div>datetime.datetime(2013, 7, 13, 15, 45, 10, 731233)</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">remember</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">user</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">email</td><td valign="top">:</td><td><div>rocky_krish@live.com</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">first_name</td><td valign="top">:</td><td><div>rahul</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">id</td><td valign="top">:</td><td><div>2L</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">last_name</td><td valign="top">:</td><td><div>satheesh</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">registration_id</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">registration_key</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">reset_password_key</td><td valign="top">:</td><td><div></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">user_groups</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">2</td><td valign="top">:</td><td><div>user_2</div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">flash</td><td valign="top">:</td><td><div>None</div></td></tr></table></div>'
+tRp168
+sS'etype'
+p169
+S"<type 'exceptions.AttributeError'>"
+p170
+sS'date'
+p171
+S'Sat Jul 13 15:50:45 2013'
+p172
+sS'response'
+p173
+g57
+(S's\xe1,\x00\x00<div><table><tr><td style="font-weight:bold;vertical-align:top">body</td><td valign="top">:</td><td><div>&lt;cStringIO.StringO object at 0xb4b8ad80&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">cookies</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">session_id_codespert</td><td valign="top">:</td><td><div>127.0.0.1-ee450d5a-ca37-42ee-aad9-ddd51d766700<table><tr><td style="font-weight:bold;vertical-align:top">comment</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">domain</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">expires</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">httponly</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">max-age</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">path</td><td valign="top">:</td><td><div>/</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">secure</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">version</td><td valign="top">:</td><td><div></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">delimiters</td><td valign="top">:</td><td><div><table><tr><td><div>{{</div></td></tr><tr><td><div>}}</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">files</td><td valign="top">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">flash</td><td valign="top">:</td><td><div></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">generic_patterns</td><td valign="top">:</td><td><div><table><tr><td><div>*</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">google_analytics_id</td><td valign="top">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">headers</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">X-Powered-By</td><td valign="top">:</td><td><div>web2py</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">logo</td><td valign="top">:</td><td><div><a class="brand" href="http://www.web2py.com/"><b>web<span>2</span>py</b>&trade;&nbsp;</a></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">menu</td><td valign="top">:</td><td><div><table><tr><td><div><table><tr><td><div>Home</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/codespert/default/index</div></td></tr><tr><td><div><table></table></div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div><span class="highlighted">web2py</span></div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://web2py.com</div></td></tr><tr><td><div><table><tr><td><div><table><tr><td><div>My Sites</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/site</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>This App</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>/admin/default/design/codespert</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Controller&#x27;&gt;, False, &#x27;/admin/default/edit/codespert/controllers/default.py&#x27;), (&lt;lazyT &#x27;View&#x27;&gt;, False, &#x27;/admin/default/edit/codespert/views/default/insertanswer.html&#x27;), (&lt;lazyT &#x27;Layout&#x27;&gt;, False, &#x27;/admin/default/edit/codespert/views/layout.html&#x27;), (&lt;lazyT &#x27;Stylesheet&#x27;&gt;, False, &#x27;/admin/default/edit/codespert/static/css/web2py.css&#x27;), (&lt;lazyT &#x27;DB Model&#x27;&gt;, False, &#x27;/admin/default/edit/codespert/models/db.py&#x27;), (&lt;lazyT &#x27;Menu Model&#x27;&gt;, False, &#x27;/admin/default/edit/codespert/models/menu.py&#x27;), (&lt;lazyT &#x27;Database&#x27;&gt;, False, &#x27;/codespert/appadmin/index&#x27;), (&lt;lazyT &#x27;Errors&#x27;&gt;, False, &#x27;/admin/default/errors/codespert&#x27;), (&lt;lazyT &#x27;About&#x27;&gt;, False, &#x27;/admin/default/about/codespert&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>web2py.com</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Download&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/download&#x27;), (&lt;lazyT &#x27;Support&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/support&#x27;), (&lt;lazyT &#x27;Demo&#x27;&gt;, False, &#x27;http://web2py.com/demo_admin&#x27;), (&lt;lazyT &#x27;Quick Examples&#x27;&gt;, False, &#x27;http://web2py.com/examples/default/examples&#x27;), (&lt;lazyT &#x27;FAQ&#x27;&gt;, False, &#x27;http://web2py.com/AlterEgo&#x27;), (&lt;lazyT &#x27;Videos&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/videos/&#x27;), (&lt;lazyT &#x27;Free Applications&#x27;&gt;, False, &#x27;http://web2py.com/appliances&#x27;), (&lt;lazyT &#x27;Plugins&#x27;&gt;, False, &#x27;http://web2py.com/plugins&#x27;), (&lt;lazyT &#x27;Layouts&#x27;&gt;, False, &#x27;http://web2py.com/layouts&#x27;), (&lt;lazyT &#x27;Recipes&#x27;&gt;, False, &#x27;http://web2pyslices.com/&#x27;), (&lt;lazyT &#x27;Semantic&#x27;&gt;, False, &#x27;http://web2py.com/semantic&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Documentation</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>http://www.web2py.com/book</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Preface&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/00&#x27;), (&lt;lazyT &#x27;Introduction&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/01&#x27;), (&lt;lazyT &#x27;Python&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/02&#x27;), (&lt;lazyT &#x27;Overview&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/03&#x27;), (&lt;lazyT &#x27;The Core&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/04&#x27;), (&lt;lazyT &#x27;The Views&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/05&#x27;), (&lt;lazyT &#x27;Database&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/06&#x27;), (&lt;lazyT &#x27;Forms and Validators&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/07&#x27;), (&lt;lazyT &#x27;Email and SMS&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/08&#x27;), (&lt;lazyT &#x27;Access Control&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/09&#x27;), (&lt;lazyT &#x27;Services&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/10&#x27;), (&lt;lazyT &#x27;Ajax Recipes&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/11&#x27;), (&lt;lazyT &#x27;Components and Plugins&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/12&#x27;), (&lt;lazyT &#x27;Deployment Recipes&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/13&#x27;), (&lt;lazyT &#x27;Other Recipes&#x27;&gt;, False, &#x27;http://www.web2py.com/book/default/chapter/14&#x27;), (&lt;lazyT &#x27;Buy this book&#x27;&gt;, False, &#x27;http://stores.lulu.com/web2py&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Community</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div>[(&lt;lazyT &#x27;Groups&#x27;&gt;, False, &#x27;http://www.web2py.com/examples/default/usergroups&#x27;), (&lt;lazyT &#x27;Twitter&#x27;&gt;, False, &#x27;http://twitter.com/web2py&#x27;), (&lt;lazyT &#x27;Live Chat&#x27;&gt;, False, &#x27;http://webchat.freenode.net/?channels=web2py&#x27;)]</div></td></tr></table></div></td></tr><tr><td><div><table><tr><td><div>Plugins</div></td></tr><tr><td><div>False</div></td></tr><tr><td><div>None</div></td></tr><tr><td><div>[(&#x27;plugin_wiki&#x27;, False, &#x27;http://web2py.com/examples/default/download&#x27;), (&lt;lazyT &#x27;Other Plugins&#x27;&gt;, False, &#x27;http://web2py.com/plugins&#x27;), (&lt;lazyT &#x27;Layout Plugins&#x27;&gt;, False, &#x27;http://web2py.com/layouts&#x27;)]</div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">meta</td><td valign="top">:</td><td><div><table><tr><td style="font-weight:bold;vertical-align:top">author</td><td valign="top">:</td><td><div>Your Name &lt;you@example.com&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">description</td><td valign="top">:</td><td><div>a cool new app</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">generator</td><td valign="top">:</td><td><div>Web2py Web Framework</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">keywords</td><td valign="top">:</td><td><div>web2py, python, framework</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">models_to_run</td><td valign="top">:</td><td><div><table><tr><td><div>^\\w+\\.py$</div></td></tr><tr><td><div>^default/\\w+\\.py$</div></td></tr><tr><td><div>^default/insertanswer/\\w+\\.py$</div></td></tr></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">postprocessing</td><td valign="top">:</td><td><div><table></table></div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_cookie_expires</td><td valign="top">:</td><td><div>None</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_data_name</td><td valign="top">:</td><td><div>session_data_codespert</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_file</td><td valign="top">:</td><td><div>&lt;open file &#x27;/home/krishnath/codespert/web2py/applications/codespert/sessions/127.0.0.1-ee450d5a-ca37-42ee-aad9-ddd51d766700&#x27;, mode &#x27;rb+&#x27; at 0x8f0a0d0&gt;</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_filename</td><td valign="top">:</td><td><div>/home/krishnath/codespert/web2py/applications/codespert/sessions/127.0.0.1-ee450d5a-ca37-42ee-aad9-ddd51d766700</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_id</td><td valign="top">:</td><td><div>127.0.0.1-ee450d5a-ca37-42ee-aad9-ddd51d766700</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_id_name</td><td valign="top">:</td><td><div>session_id_codespert</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_locked</td><td valign="top">:</td><td><div>True</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_new</td><td valign="top">:</td><td><div>False</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">session_storage_type</td><td valign="top">:</td><td><div>file</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">status</td><td valign="top">:</td><td><div>200</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">subtitle</td><td valign="top">:</td><td><div>customize me!</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">title</td><td valign="top">:</td><td><div>Codespert</div></td></tr><tr><td style="font-weight:bold;vertical-align:top">view</td><td valign="top">:</td><td><div>default/insertanswer.html</div></td></tr></table></div>'
+tRp174
+sS'locals'
+p175
+(dp176
+S'mail'
+p177
+S'<gluon.tools.Mail object>'
+p178
+sS'ret'
+p179
+S'154L'
+p180
+sS'ans'
+p181
+S'\'mail = Mail()\\n    mail.settings.server = \\\'smtp.g... some issues.We are working on it"\\n    return var\''
+p182
+sssS'traceback'
+p183
+S'Traceback (most recent call last):\n  File "/home/krishnath/codespert/web2py/gluon/restricted.py", line 212, in restricted\n    exec ccode in environment\n  File "/home/krishnath/codespert/web2py/applications/codespert/controllers/default.py", line 218, in <module>\n  File "/home/krishnath/codespert/web2py/gluon/globals.py", line 194, in <lambda>\n    self._caller = lambda f: f()\n  File "/home/krishnath/codespert/web2py/gluon/tools.py", line 3022, in f\n    return action(*a, **b)\n  File "/home/krishnath/codespert/web2py/applications/codespert/controllers/default.py", line 58, in insertanswer\n    usrnm = db(db.auth_user.id == auth.usr.id).select(db.auth_user.first_name)\nAttributeError: \'Auth\' object has no attribute \'usr\'\n'
+p184
+s.
