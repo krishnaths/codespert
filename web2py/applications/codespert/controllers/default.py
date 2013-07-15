@@ -172,33 +172,56 @@ def home():
 
 @auth.requires_login()
 def listqs():
-    #quests = db(db.UsrQst.usrid == 1).select(db.UsrQst.ALL)
-    quests = db().select(db.UsrQst.ALL)
-    questions = []
-    qids = []
-    qtagids = []
-    qtagnames = []
-    qtags = []
-    for qst in quests:
-        questions.append(qst.question)
-	qids.append(qst.id)
-	qtags.append(qst.tag)
-    for i in range(len(qtags)):
-	qtags[i] = qtags[i].split('|')
-    tkMessageBox.showinfo("qtags",qtags)	
-    for m in range(len(qtags)):
-	qtagnames.append([])
-	for k in range(len(qtags[m])):
-	    tgname = db(db.Tags.id == qtags[m][k]).select(db.Tags.name)
-	    tkMessageBox.showinfo("tgname",tgname)
-	    
-	    for trname in tgname:
-        	tkMessageBox.showinfo("inside for",str(trname)+ "m is"+str(m))	
-		tkMessageBox.showinfo("trname.name",trname.name+str(qtagnames))    
-		qtagnames[m].append(trname.name)
-    tkMessageBox.showinfo("qtagnames",qtagnames)
-    #return dict(quests = questions,qids=qids)
-    return dict(quests=quests,qtagnames=qtagnames)
+    
+    if request.vars['tid'] is None:
+        quests = db().select(db.UsrQst.ALL)
+	questions = []
+	qids = []
+	qtagids = []
+	qtagnames = []
+	qtags = []
+	for qst in quests:
+            questions.append(qst.question)
+            qids.append(qst.id)
+            qtags.append(qst.tag)
+	for i in range(len(qtags)):
+	    qtags[i] = qtags[i].split('|')
+
+	for m in range(len(qtags)):
+            qtagnames.append([])
+            for k in range(len(qtags[m])):
+                tgname = db(db.Tags.id == qtags[m][k]).select(db.Tags.name)
+                for trname in tgname:
+                    qtagnames[m].append(trname.name)
+        return dict(quests=quests,qtagnames=qtagnames,qtagids=qtags,istid="0")
+    else:
+        
+        tid = request.vars['tid']
+        for qtagname in db(db.Tags.id == tid).select(db.Tags.name):
+            qtagnames = qtagname.name
+            
+        tkMessageBox.showinfo(str(type(request.vars['tid']))+"type")
+        arrQids = []
+        arrTids = []
+        arrQues = []
+        arrIds = []
+        quests = db().select(db.UsrQst.ALL)
+        
+        for qst in quests:
+            arrqTids = qst.tag.split('|')
+            tkMessageBox.showinfo(str(arrqTids)+"arrqTids")
+            if tid in arrqTids:
+                arrQids.append(qst.id)
+        tkMessageBox.showinfo(str(arrQids)+"arrqids")
+        rows = quests.find(lambda row: row.id in arrQids)
+        #for row in rows:
+        #    tkMessageBox.showinfo(row.question)
+        #    arrQues.append(row.question)
+        #Now arrQids has all ids that has the selected tags
+        return dict(quests=rows,qtagnames=qtagnames,qtagids=tid,istid="1")
+            
+        
+        
      
 @auth.requires_login()
 def trainings():

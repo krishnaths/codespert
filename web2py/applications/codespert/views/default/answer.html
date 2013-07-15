@@ -9,7 +9,12 @@ $(document).ready(function(){
     $('#txtAnswers').css("width","1000");
     $('#txtAnswers').attr("maxlength","2000");
     $('#txtAnswers').attr("class","noTextClear");
-    
+$('.tagclass').click(function(e){
+     console.log(34);
+  loc = window.location.origin+"/codespert/default/listqs?tid="+this.id
+  window.location = loc;
+
+});    
        
 $('#btnsubmit').click(function(e){
 	

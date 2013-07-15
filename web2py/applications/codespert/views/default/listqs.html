@@ -1,21 +1,38 @@
 {{extend 'layout.html'}}
 <script>
 $(document).ready(function(){
-$('td').css('cursor', 'pointer');
-$('td').click(function(){
+$('pre').css('cursor', 'pointer');
+$('a.tagclass').css('cursor','pointer');
+$('a.ques').click(function(){
 console.log(1);
 console.log('this log'+this.id);
 //$.post("answer/"+this.id);
 loc = window.location.origin+"/codespert/default/answer/"+this.id;
 window.location = loc;
 });
+
+$('a.tagclass').click(function(){
+   console.log(12);
+  loc = window.location.origin+"/codespert/default/listqs?tid="+this.id
+  window.location = loc;
+});
+
 });
 </script>
 <label style="font-family:COMIC SANS MS"><h1><I>List of Questions that u have asked.</I></h1></label>
 <table>
-{{for qst in quests:}}
+
+{{for i in range(len(quests)):}}
 <tr style="height:10px"></tr>
-<tr><td id={{=qst.id}} style="color:rgb(8, 48, 71);font-family:cursive"><a><pre class="showup" style="color:rgb(8, 48, 71);font-family:cursive"showup">{{=qst.question}}</pre></a></td></tr>
+<tr><td id={{=quests[i].id}} style="color:rgb(8, 48, 71);font-family:cursive"><a id={{=quests[i].id}} class="ques"><pre class="showup" style="color:rgb(8, 48, 71);font-family:cursive"showup">{{=quests[i].question}}</pre></a></td>
+{{if istid=="0":}}
+{{for m in range(len(qtagnames[i])):}}
+<td style="vertical-align:middle"><a id="{{=qtagids[i][m]}}" class="tagclass" height="10px" width="10px">{{=qtagnames[i][m]}}</a></td>
+{{pass}}
+{{else:}}
+<td style="vertical-align:middle"><a id="{{=qtagids}}" class="tagclass" height="10px" width="10px">{{=qtagnames}}</a></td>
+{{pass}}
+</tr>
 {{pass}}
 </table>
 
