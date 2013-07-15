@@ -65,3 +65,7 @@
 [2013-07-10 23:40:52] CREATE home.html: 0
 [2013-07-11 14:52:11] CREATE Answer.html: 0
 [2013-07-11 14:52:16] EDIT codespert/views/Answer.html: 0
+[2013-07-13 20:07:41] CREATE searchqs.html: 0
+[2013-07-13 20:07:44] EDIT codespert/views/searchqs.html: 0
+[2013-07-13 20:49:42] EDIT codespert/views/default/searchqs.html: 0
+[2013-07-13 20:49:44] EDIT codespert/views/default/searchqs.html: 0

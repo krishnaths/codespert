@@ -12,6 +12,30 @@ from gluon.tools import Mail
 from Tkinter import *
 import tkMessageBox
 import logging
+import json
+
+@auth.requires_login()
+def getqs():
+    tkMessageBox.showinfo('asdasd')
+    questions = db().select(db.UsrQst.question)
+    arrqs = []
+    for ques in questions:
+#	tkMessageBox.showinfo(ques.question)
+	arrqs.append(ques.question)
+    arrqs = [{ 'id': 1, 'name': 'Toronto' },{ 'id': 2, 'name': 'Montreal' }]
+    #data = json.loads(arrqs)
+    #tkMessageBox.showinfo(data)
+    return json.dumps(arrqs)
+    #return dict(value=arrqs)
+
+
+@auth.requires_login()
+def searchqs_bk():
+    return dict(hi="hello",value="sad")
+
+@auth.requires_login()
+def searchqs():
+    return dict(hi="hello",value="sad")
 
 @auth.requires_login()
 def mailit(qid):
@@ -82,11 +106,26 @@ def insertanswer():
 @auth.requires_login()
 def answer():
     
-    qstion = db(db.UsrQst.id == request.args(0)).select(db.UsrQst.question)
+    qstion = db(db.UsrQst.id == request.args(0)).select(db.UsrQst.ALL)
     quest = ""
+    tag = ""
+    arrtags = []
+    arrtagnames = []
+    arrtagids = []
     for qst in qstion:
 	#tkMessageBox.showinfo("hi"+qst.question)
 	quest = qst.question
+	tag = qst.tag
+    arrtags = tag.split('|')
+    for tak in arrtags:
+	tagdets = db(db.Tags.id == tak).select(db.Tags.ALL)
+	for tg in tagdets:
+	    arrtagnames.append(tg.name)
+	    arrtagids.append(tg.id)
+
+	#    arrtagnames.append(tgname.name)
+    tkMessageBox.showinfo('tagnames'+str(arrtagnames))
+	 
     answers = db(db.Answer.qid == request.args(0)).select(db.Answer.answer)
     answerers = db(db.Answer.qid == request.args(0))(db.Answer.byid == db.auth_user.id).select(db.Answer.answer,db.auth_user.first_name) 
     codes = db(db.Codes.qid == request.args(0)).select(db.Codes.Code)
@@ -126,7 +165,7 @@ def answer():
     if qst ==  "":
         return dict(qstion="")
     else:
-        return dict(usrnm=auth.user.first_name.lower(),qid=request.args(0),qstion=quest,code=script,answers=answers,answerers=answerers,form=form)
+        return dict(usrnm=auth.user.first_name.lower(),qid=request.args(0),qstion=quest,code=script,answers=answers,answerers=answerers,form=form,tagnames=arrtagnames,tagids=arrtagids)
 
 def home():
     return dict()
@@ -137,11 +176,29 @@ def listqs():
     quests = db().select(db.UsrQst.ALL)
     questions = []
     qids = []
+    qtagids = []
+    qtagnames = []
+    qtags = []
     for qst in quests:
         questions.append(qst.question)
 	qids.append(qst.id)
+	qtags.append(qst.tag)
+    for i in range(len(qtags)):
+	qtags[i] = qtags[i].split('|')
+    tkMessageBox.showinfo("qtags",qtags)	
+    for m in range(len(qtags)):
+	qtagnames.append([])
+	for k in range(len(qtags[m])):
+	    tgname = db(db.Tags.id == qtags[m][k]).select(db.Tags.name)
+	    tkMessageBox.showinfo("tgname",tgname)
+	    
+	    for trname in tgname:
+        	tkMessageBox.showinfo("inside for",str(trname)+ "m is"+str(m))	
+		tkMessageBox.showinfo("trname.name",trname.name+str(qtagnames))    
+		qtagnames[m].append(trname.name)
+    tkMessageBox.showinfo("qtagnames",qtagnames)
     #return dict(quests = questions,qids=qids)
-    return dict(quests=quests)
+    return dict(quests=quests,qtagnames=qtagnames)
      
 @auth.requires_login()
 def trainings():
@@ -161,6 +218,7 @@ def index():
     return auth.wiki()
     """
     response.flash = T("Welcome to web2py!")
+    redirect(URL('static','codespert.html'))
     return dict(message=T('Hello World'))
 
 

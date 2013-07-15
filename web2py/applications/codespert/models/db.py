@@ -85,7 +85,8 @@ use_janrain(auth, filename='private/janrain.key')
 db.define_table('UsrQst',
 Field('id'),
 Field('usrid'),
-Field('question','text'))
+Field('question','text'),
+Field('tag'))
 
 
 db.define_table('Answer',
@@ -99,3 +100,8 @@ db.define_table('Codes',
 Field('id'),
 Field('qid'),
 Field('Code','text'))
+
+
+db.define_table('Tags',
+Field('id'),
+Field('name'))

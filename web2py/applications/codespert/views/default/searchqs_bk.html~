@@ -1,0 +1,65 @@
+{{extend 'layout.html'}}
+<link href="{{=URL('static','css/external/prettify.css')}}" rel="stylesheet" />
+
+    <link href="{{=URL('static','css/external/demo.css')}}" rel="stylesheet"/>
+<script src="{{=URL('static','js/external/prettify.js')}}" type="text/javascript"></script>
+
+<script src="{{=URL('static','js/external/demo.js')}}" type="text/javascript"></script>
+<script>
+function displayResult(item, val, text) {
+    console.log(item);
+    $('.alert').show().html('You selected <strong>' + val + '</strong>: <strong>' + text + '</strong>');
+}
+
+$(document).ready(function($) {
+
+    $('#demo1').typeahead({
+        source: [
+		    { id: 1, name: 'Toronto' },
+		    { id: 2, name: 'Montreal' },
+		    { id: 3, name: 'New York' },
+		    { id: 4, name: 'Buffalo' },
+		    { id: 5, name: 'Boston' },
+		    { id: 6, name: 'Columbus' },
+		    { id: 7, name: 'Dallas' },
+		    { id: 8, name: 'Vancouver' },
+		    { id: 9, name: 'Seattle' },
+		    { id: 10, name: 'Los Angeles' }
+	    ],
+        itemSelected: displayResult
+    });
+
+   
+
+    // Mock an AJAX request
+    $.mockjax({
+        url: '/cities/list',
+        responseText: [{ id: 1, name: 'Toronto' },
+				    { id: 2, name: 'Montreal' },
+				    { id: 3, name: 'New York' },
+				    { id: 4, name: 'Buffalo' },
+				    { id: 5, name: 'Boston' },
+				    { id: 6, name: 'Columbus' },
+				    { id: 7, name: 'Dallas' },
+				    { id: 8, name: 'Vancouver' },
+				    { id: 9, name: 'Seattle' },
+				    { id: 10, name: 'Los Angeles' }]
+    });
+
+    
+});
+</script>
+<body class="container">
+<div class="row">
+        <div class="well span4">
+            <input id="demo12" type="text" class="span4" placeholder="Search cities..." autocomplete="off" />
+<input id="demo1" placeholder="Search Questions..."  class="typeahead" type="text"  style="width:500px;" autocomplete="off" />
+        </div>
+</div>
+<script src="{{=URL('static','js/external/jquery-1.8.0.min.js')}}" type="text/javascript"></script>
+<script src="{{=URL('static','js/external/mockjax.js')}}" type="text/javascript"></script>
+<script src="{{=URL('static','js/external/bootstrap-typeahead.js')}}" type="text/javascript"></script>
+</body>
+
+
+

@@ -1,0 +1,1111 @@
+{{extend 'layout.html'}}
+<h1>This is the searchqs.html template</h1>
+<body class="single single-post postid-811 single-format-standard">
+
+<div id="toTop" style="display: block;"> </div>
+<div id="wrapper" class="hfeed">
+
+
+<header id="header">
+
+		<div id="masthead">
+
+			<div id="branding" role="banner">
+
+				
+ <div id="header-container">
+
+ 
+ <div><div id="site-title"><span> <a href="http://blattchat.com/" title="Alan Greenblatt" rel="home">Alan Greenblatt</a> </span></div><div id="site-description">Technical Rabbit Holes</div></div><div class="socials" id="sheader">			
+			<a target="_blank" rel="nofollow" href="https://twitter.com/agreenblatt" class="socialicons social-Twitter" title="Twitter"><img alt="Twitter" src="http://blattchat.com/wp-content/themes/mantra/images/socials/Twitter.png"></a></div></div>				<div style="clear:both;"></div>
+
+			</div><!-- #branding -->
+
+			<nav id="access" role="navigation">
+
+				<div class="skip-link screen-reader-text"><a href="#content" title="Skip to content">Skip to content</a></div>
+<div class="menu"><ul id="prime_nav" class="menu l_tinynavNaN"><li id="menu-item-1008" class="menu-item menu-item-type-custom menu-item-object-custom menu-item-home menu-item-1008"><a href="http://blattchat.com">Home</a></li>
+<li id="menu-item-1010" class="menu-item menu-item-type-post_type menu-item-object-page menu-item-1010"><a href="http://blattchat.com/about/">About</a></li>
+</ul><select class="tinynav tinynavNaN"><option value="http://blattchat.com">Home</option><option value="http://blattchat.com/about/" selected="selected">About</option></select></div>
+			</nav><!-- #access -->
+
+		</div><!-- #masthead -->
+
+	<div style="clear:both;"> </div>
+
+</header><!-- #header -->
+<div id="main">
+	<div id="forbottom">
+		
+		<div style="clear:both;"> </div>
+
+		<div class="breadcrumbs"><a href="http://blattchat.com">Alan Greenblatt » </a><a href="http://blattchat.com/category/html-css-js/">HTML/CSS/JS » </a>Twitter Boostrap Typeahead Tutorial</div>							
+		<section id="container">
+			<div id="content" role="main">
+						
+
+				<div id="nav-above" class="navigation">
+					<div class="nav-previous"><a href="http://blattchat.com/2012/12/14/adobe-techlive-is-live/" rel="prev"><span class="meta-nav">«</span> Adobe TechLive is Live!</a></div>
+					<div class="nav-next"><a href="http://blattchat.com/2013/01/14/building-a-rest-interface-with-wordpress/" rel="next">Building a REST interface with WordPress (WordPress App Design Part 2) <span class="meta-nav">»</span></a></div>
+				</div><!-- #nav-above -->
+
+				<div id="post-811" class="post-811 post type-post status-publish format-standard hentry category-html-css-js tag-autocomplete tag-bootstrap tag-twitter tag-typeahead">
+					<h1 class="entry-title">Twitter Boostrap Typeahead Tutorial</h1>
+										<div class="entry-meta">
+						&nbsp;   <span class="onDate"> <a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/" title="11:58 pm" rel="bookmark"><span class="entry-date">January 9, 2013</span> <span class="entry-time"> - 11:58 pm</span></a> <span class="bl_sep">|</span> </span> <span class="bl_categ"> <a href="http://blattchat.com/category/html-css-js/" title="View all posts in HTML/CSS/JS" rel="tag">HTML/CSS/JS</a> </span>  					</div><!-- .entry-meta -->
+
+					<div class="entry-content">
+						<p>Twitter Bootstrap provides an <a href="http://twitter.github.com/bootstrap/javascript.html#typeahead" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://twitter.github.com']);">autocomplete/typeahead component</a> which is very easy to use, but is a bit tricky to use (in my humble opinion) when you are working with anything more than a simple String array as your source of autocomplete options.<span id="more-811"></span></p>
+<p>Say for example you want to allow users to search your server-based database of products based on the product name. The user types in the name of the product and typeahead goes off and makes an asynchronous request to the sever to query the database and returns a list of products. In the typeahead widget you want to show the user the list of potential product names, but when they select one of the options, you want to able to populate the display with the product price, SKU, description, etc. and of course you need the ID from the server so you can manage communications with the server, say for a purchase.</p>
+<p>For starters though, let’s go over the basics of how typeahead works. The following example has 3 potential product names:</p>
+<ul>
+<li>Deluxe Bicycle</li>
+<li>Super Deluxe Trampoline</li>
+<li>Super Duper Scooter</li>
+</ul>
+<p>Type in whatever partial name you want and you’ll see the appropriate typeahead options.</p>
+<p><label for="product_search">Product Search: </label><input id="product_search" type="text" data-provide="typeahead" data-source="[&quot;Deluxe Bicycle&quot;, &quot;Super Deluxe Trampoline&quot;, &quot;Super Duper Scooter&quot;]"></p>
+<p>The code for that is fairly staightforward:</p>
+<script type="text/javascript" src="https://gist.github.com/4499360.js"></script>
+<p>It’s simply an input tag with <em>data-provide=”typeahead”</em> to indicate that we want typeahead on the input tag, and then <em>data-source</em> specifies an array of strings.</p>
+<p>Let’s step things up a bit and move the array from being declared inline with the element, to being dynamically populated in Javascript:</p>
+<script src="https://gist.github.com/awgreenblatt/4499615.js"></script><link href="https://gist.github.com/assets/embed-bfcadee384027982121fdeb9930e78b2.css" media="screen" rel="stylesheet"><div id="gist4499615" class="gist">
+      <div class="gist-file">
+        <div class="gist-data gist-syntax">
+
+
+
+  <div class="file-data">
+    <table cellpadding="0" cellspacing="0" class="lines highlight">
+      <tbody><tr>
+        <td class="line-numbers">
+          <span class="line-number" id="file-typeahead-objects-L1" rel="file-typeahead-objects-L1">1</span>
+          <span class="line-number" id="file-typeahead-objects-L2" rel="file-typeahead-objects-L2">2</span>
+          <span class="line-number" id="file-typeahead-objects-L3" rel="file-typeahead-objects-L3">3</span>
+          <span class="line-number" id="file-typeahead-objects-L4" rel="file-typeahead-objects-L4">4</span>
+          <span class="line-number" id="file-typeahead-objects-L5" rel="file-typeahead-objects-L5">5</span>
+          <span class="line-number" id="file-typeahead-objects-L6" rel="file-typeahead-objects-L6">6</span>
+          <span class="line-number" id="file-typeahead-objects-L7" rel="file-typeahead-objects-L7">7</span>
+          <span class="line-number" id="file-typeahead-objects-L8" rel="file-typeahead-objects-L8">8</span>
+          <span class="line-number" id="file-typeahead-objects-L9" rel="file-typeahead-objects-L9">9</span>
+          <span class="line-number" id="file-typeahead-objects-L10" rel="file-typeahead-objects-L10">10</span>
+          <span class="line-number" id="file-typeahead-objects-L11" rel="file-typeahead-objects-L11">11</span>
+          <span class="line-number" id="file-typeahead-objects-L12" rel="file-typeahead-objects-L12">12</span>
+          <span class="line-number" id="file-typeahead-objects-L13" rel="file-typeahead-objects-L13">13</span>
+          <span class="line-number" id="file-typeahead-objects-L14" rel="file-typeahead-objects-L14">14</span>
+          <span class="line-number" id="file-typeahead-objects-L15" rel="file-typeahead-objects-L15">15</span>
+          <span class="line-number" id="file-typeahead-objects-L16" rel="file-typeahead-objects-L16">16</span>
+          <span class="line-number" id="file-typeahead-objects-L17" rel="file-typeahead-objects-L17">17</span>
+          <span class="line-number" id="file-typeahead-objects-L18" rel="file-typeahead-objects-L18">18</span>
+          <span class="line-number" id="file-typeahead-objects-L19" rel="file-typeahead-objects-L19">19</span>
+          <span class="line-number" id="file-typeahead-objects-L20" rel="file-typeahead-objects-L20">20</span>
+          <span class="line-number" id="file-typeahead-objects-L21" rel="file-typeahead-objects-L21">21</span>
+          <span class="line-number" id="file-typeahead-objects-L22" rel="file-typeahead-objects-L22">22</span>
+          <span class="line-number" id="file-typeahead-objects-L23" rel="file-typeahead-objects-L23">23</span>
+          <span class="line-number" id="file-typeahead-objects-L24" rel="file-typeahead-objects-L24">24</span>
+          <span class="line-number" id="file-typeahead-objects-L25" rel="file-typeahead-objects-L25">25</span>
+          <span class="line-number" id="file-typeahead-objects-L26" rel="file-typeahead-objects-L26">26</span>
+          <span class="line-number" id="file-typeahead-objects-L27" rel="file-typeahead-objects-L27">27</span>
+          <span class="line-number" id="file-typeahead-objects-L28" rel="file-typeahead-objects-L28">28</span>
+          <span class="line-number" id="file-typeahead-objects-L29" rel="file-typeahead-objects-L29">29</span>
+          <span class="line-number" id="file-typeahead-objects-L30" rel="file-typeahead-objects-L30">30</span>
+          <span class="line-number" id="file-typeahead-objects-L31" rel="file-typeahead-objects-L31">31</span>
+          <span class="line-number" id="file-typeahead-objects-L32" rel="file-typeahead-objects-L32">32</span>
+        </td>
+        <td class="line-data">
+          <pre class="line-pre"><div class="line" id="file-typeahead-objects-LC1">&lt;html&gt;</div><div class="line" id="file-typeahead-objects-LC2">&lt;head&gt;</div><div class="line" id="file-typeahead-objects-LC3">    &lt;link href="bootstrap.min.css" rel="stylesheet" type="text/css" /&gt;</div><div class="line" id="file-typeahead-objects-LC4">&lt;/head&gt;</div><div class="line" id="file-typeahead-objects-LC5">&lt;body&gt;</div><div class="line" id="file-typeahead-objects-LC6">&nbsp;</div><div class="line" id="file-typeahead-objects-LC7">&lt;div style="margin: 50px 50px"&gt;</div><div class="line" id="file-typeahead-objects-LC8">    &lt;label for="product_search"&gt;Product Search: &lt;/label&gt;</div><div class="line" id="file-typeahead-objects-LC9">    &lt;input id="product_search" type="text" data-provide="typeahead"&gt;</div><div class="line" id="file-typeahead-objects-LC10">&lt;/div&gt;</div><div class="line" id="file-typeahead-objects-LC11">&nbsp;</div><div class="line" id="file-typeahead-objects-LC12">&lt;script src="js/jquery-1.8.3.min.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-objects-LC13">&lt;script src="js/bootstrap-typeahead.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-objects-LC14">&nbsp;</div><div class="line" id="file-typeahead-objects-LC15">&lt;script&gt;</div><div class="line" id="file-typeahead-objects-LC16">    $(document).ready(function($) {</div><div class="line" id="file-typeahead-objects-LC17">        // Workaround for bug in mouse item selection</div><div class="line" id="file-typeahead-objects-LC18">        $.fn.typeahead.Constructor.prototype.blur = function() {</div><div class="line" id="file-typeahead-objects-LC19">            var that = this;</div><div class="line" id="file-typeahead-objects-LC20">            setTimeout(function () { that.hide() }, 250);</div><div class="line" id="file-typeahead-objects-LC21">        };</div><div class="line" id="file-typeahead-objects-LC22">&nbsp;</div><div class="line" id="file-typeahead-objects-LC23">        $('#product_search').typeahead({</div><div class="line" id="file-typeahead-objects-LC24">            source: function(query, process) {</div><div class="line" id="file-typeahead-objects-LC25">                return ["Deluxe Bicycle", "Super Deluxe Trampoline", "Super Duper Scooter"];</div><div class="line" id="file-typeahead-objects-LC26">            }</div><div class="line" id="file-typeahead-objects-LC27">        });</div><div class="line" id="file-typeahead-objects-LC28">    })</div><div class="line" id="file-typeahead-objects-LC29">&lt;/script&gt;</div><div class="line" id="file-typeahead-objects-LC30">&nbsp;</div><div class="line" id="file-typeahead-objects-LC31">&lt;/body&gt;</div><div class="line" id="file-typeahead-objects-LC32">&lt;/html&gt;</div></pre>
+        </td>
+      </tr>
+    </tbody></table>
+  </div>
+
+        </div>
+
+        <div class="gist-meta">
+          <a href="https://gist.github.com/awgreenblatt/4499615/raw/8fa305fd9b3a875541c6e6e38133f31ca4e099d6/typeahead-objects" style="float:right">view raw</a>
+          <a href="https://gist.github.com/awgreenblatt/4499615#file-typeahead-objects" style="float:right; margin-right:10px; color:#666;">typeahead-objects</a>
+          <a href="https://gist.github.com/awgreenblatt/4499615">This Gist</a> brought to you by <a href="https://github.com">GitHub</a>.
+        </div>
+      </div>
+</div>
+
+<p>Visually, this behaves identically. Try out the following text input by typing a substring of one of the product names:</p>
+<p><label for="product_search_2">Product Search: </label><input id="product_search_2" type="text" data-provide="typeahead"><ul class="typeahead dropdown-menu" style="top: 2022.9375px; left: 70px; display: none;"><li data-value="Super Deluxe Trampoline" class="active"><a href="#"><strong>S</strong>uper Deluxe Trampoline</a></li><li data-value="Super Duper Scooter"><a href="#"><strong>S</strong>uper Duper <strong>S</strong>cooter</a></li></ul></p>
+<p>But as you’ll see in the source, here we do not specify <em>data-source</em> in the input element declaration. Instead we call the <em>typeahead()</em> method on the input element and pass in the <em>source</em> option as a function which returns the string array.</p>
+<p>If you wanted to retrieve the list of products from the server, in your source function override you would make your AJAX call, and then in the asynchronous response you would generate the string array and call process(), passing in the string array.</p>
+<p>I also found that there was a bug in some browsers with the typeahead component when trying to select one of the typeahead options with the mouse. This is a <a href="https://github.com/twitter/bootstrap/issues/2715" onclick="javascript:_gaq.push(['_trackEvent','outbound-article','http://github.com']);">known issue</a>. Sometimes mouse selection doesn’t work. Rather than change the bootstrap-typeahead.js file, I’ve overwritten the typeahead blur() method to give it a slightly longer than normal delay.</p>
+<p>Besides the <em>source</em> option, you can also specify a <em>highlighter()</em> function that specifies how each possible autocomplete option is displayed, and an <em>updater()</em> function that can execute some code when the user selects an item. In the following I’ve modified the display of each item using the highlighter() override, and I print out the selected item to the console in the overridden updater() method:</p>
+<script src="https://gist.github.com/awgreenblatt/4499696.js"></script><link href="https://gist.github.com/assets/embed-bfcadee384027982121fdeb9930e78b2.css" media="screen" rel="stylesheet"><div id="gist4499696" class="gist">
+      <div class="gist-file">
+        <div class="gist-data gist-syntax">
+
+
+
+  <div class="file-data">
+    <table cellpadding="0" cellspacing="0" class="lines highlight">
+      <tbody><tr>
+        <td class="line-numbers">
+          <span class="line-number" id="file-typeahead-strings-highighter-L1" rel="file-typeahead-strings-highighter-L1">1</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L2" rel="file-typeahead-strings-highighter-L2">2</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L3" rel="file-typeahead-strings-highighter-L3">3</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L4" rel="file-typeahead-strings-highighter-L4">4</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L5" rel="file-typeahead-strings-highighter-L5">5</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L6" rel="file-typeahead-strings-highighter-L6">6</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L7" rel="file-typeahead-strings-highighter-L7">7</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L8" rel="file-typeahead-strings-highighter-L8">8</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L9" rel="file-typeahead-strings-highighter-L9">9</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L10" rel="file-typeahead-strings-highighter-L10">10</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L11" rel="file-typeahead-strings-highighter-L11">11</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L12" rel="file-typeahead-strings-highighter-L12">12</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L13" rel="file-typeahead-strings-highighter-L13">13</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L14" rel="file-typeahead-strings-highighter-L14">14</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L15" rel="file-typeahead-strings-highighter-L15">15</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L16" rel="file-typeahead-strings-highighter-L16">16</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L17" rel="file-typeahead-strings-highighter-L17">17</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L18" rel="file-typeahead-strings-highighter-L18">18</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L19" rel="file-typeahead-strings-highighter-L19">19</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L20" rel="file-typeahead-strings-highighter-L20">20</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L21" rel="file-typeahead-strings-highighter-L21">21</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L22" rel="file-typeahead-strings-highighter-L22">22</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L23" rel="file-typeahead-strings-highighter-L23">23</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L24" rel="file-typeahead-strings-highighter-L24">24</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L25" rel="file-typeahead-strings-highighter-L25">25</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L26" rel="file-typeahead-strings-highighter-L26">26</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L27" rel="file-typeahead-strings-highighter-L27">27</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L28" rel="file-typeahead-strings-highighter-L28">28</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L29" rel="file-typeahead-strings-highighter-L29">29</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L30" rel="file-typeahead-strings-highighter-L30">30</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L31" rel="file-typeahead-strings-highighter-L31">31</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L32" rel="file-typeahead-strings-highighter-L32">32</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L33" rel="file-typeahead-strings-highighter-L33">33</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L34" rel="file-typeahead-strings-highighter-L34">34</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L35" rel="file-typeahead-strings-highighter-L35">35</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L36" rel="file-typeahead-strings-highighter-L36">36</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L37" rel="file-typeahead-strings-highighter-L37">37</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L38" rel="file-typeahead-strings-highighter-L38">38</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L39" rel="file-typeahead-strings-highighter-L39">39</span>
+          <span class="line-number" id="file-typeahead-strings-highighter-L40" rel="file-typeahead-strings-highighter-L40">40</span>
+        </td>
+        <td class="line-data">
+          <pre class="line-pre"><div class="line" id="file-typeahead-strings-highighter-LC1">&lt;html&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC2">&lt;head&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC3">    &lt;link href="bootstrap.min.css" rel="stylesheet" type="text/css" /&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC4">&lt;/head&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC5">&lt;body&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC6">&nbsp;</div><div class="line" id="file-typeahead-strings-highighter-LC7">&lt;div style="margin: 50px 50px"&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC8">    &lt;label for="product_search"&gt;Product Search: &lt;/label&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC9">    &lt;input id="product_search" type="text" data-provide="typeahead"&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC10">&lt;/div&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC11">&nbsp;</div><div class="line" id="file-typeahead-strings-highighter-LC12">&lt;script src="js/jquery-1.8.3.min.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC13">&lt;script src="js/bootstrap-typeahead.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC14">&nbsp;</div><div class="line" id="file-typeahead-strings-highighter-LC15">&lt;script&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC16">    $(document).ready(function($) {</div><div class="line" id="file-typeahead-strings-highighter-LC17">        // Workaround for bug in mouse item selection</div><div class="line" id="file-typeahead-strings-highighter-LC18">        $.fn.typeahead.Constructor.prototype.blur = function() {</div><div class="line" id="file-typeahead-strings-highighter-LC19">            var that = this;</div><div class="line" id="file-typeahead-strings-highighter-LC20">            setTimeout(function () { that.hide() }, 250);</div><div class="line" id="file-typeahead-strings-highighter-LC21">        };</div><div class="line" id="file-typeahead-strings-highighter-LC22">&nbsp;</div><div class="line" id="file-typeahead-strings-highighter-LC23">        $('#product_search').typeahead({</div><div class="line" id="file-typeahead-strings-highighter-LC24">            source: function(query, process) {</div><div class="line" id="file-typeahead-strings-highighter-LC25">                return ["Deluxe Bicycle", "Super Deluxe Trampoline", "Super Duper Scooter"];</div><div class="line" id="file-typeahead-strings-highighter-LC26">            },</div><div class="line" id="file-typeahead-strings-highighter-LC27">&nbsp;</div><div class="line" id="file-typeahead-strings-highighter-LC28">            highlighter: function(item) {</div><div class="line" id="file-typeahead-strings-highighter-LC29">                return "==&gt;" + item + "&lt;==";</div><div class="line" id="file-typeahead-strings-highighter-LC30">            },</div><div class="line" id="file-typeahead-strings-highighter-LC31">&nbsp;</div><div class="line" id="file-typeahead-strings-highighter-LC32">            updater: function(item) {</div><div class="line" id="file-typeahead-strings-highighter-LC33">                console.log("'" + item + "' selected.");</div><div class="line" id="file-typeahead-strings-highighter-LC34">                return item;</div><div class="line" id="file-typeahead-strings-highighter-LC35">            }</div><div class="line" id="file-typeahead-strings-highighter-LC36">        });</div><div class="line" id="file-typeahead-strings-highighter-LC37">    })</div><div class="line" id="file-typeahead-strings-highighter-LC38">&lt;/script&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC39">&lt;/body&gt;</div><div class="line" id="file-typeahead-strings-highighter-LC40">&lt;/html&gt;</div></pre>
+        </td>
+      </tr>
+    </tbody></table>
+  </div>
+
+        </div>
+
+        <div class="gist-meta">
+          <a href="https://gist.github.com/awgreenblatt/4499696/raw/1821a6177664046c0db05702799dffe8d02b2034/typeahead-strings-highighter" style="float:right">view raw</a>
+          <a href="https://gist.github.com/awgreenblatt/4499696#file-typeahead-strings-highighter" style="float:right; margin-right:10px; color:#666;">typeahead-strings-highighter</a>
+          <a href="https://gist.github.com/awgreenblatt/4499696">This Gist</a> brought to you by <a href="https://github.com">GitHub</a>.
+        </div>
+      </div>
+</div>
+
+<p><label for="product_search_3">Product Search: </label><input id="product_search_3" type="text" data-provide="typeahead"></p>
+<h3>Objects</h3>
+<p>Now, the moment you’ve been waiting for. Well, almost. If you’ve stuck around this far, you’re not interested simply in an array of strings. Your data is more likely an array of objects. The following input should behave identically to the previous one, only this time we have an array of product objects. Each product object contains an id, a name and a price.</p>
+<p><label for="product_search_4">Product Search: </label><input id="product_search_4" type="text" data-provide="typeahead"></p>
+<p>Here’s the code for that:</p>
+<script src="https://gist.github.com/awgreenblatt/4499728.js"></script><link href="https://gist.github.com/assets/embed-bfcadee384027982121fdeb9930e78b2.css" media="screen" rel="stylesheet"><div id="gist4499728" class="gist">
+      <div class="gist-file">
+        <div class="gist-data gist-syntax">
+
+
+
+  <div class="file-data">
+    <table cellpadding="0" cellspacing="0" class="lines highlight">
+      <tbody><tr>
+        <td class="line-numbers">
+          <span class="line-number" id="file-typeahead-objects-L1" rel="file-typeahead-objects-L1">1</span>
+          <span class="line-number" id="file-typeahead-objects-L2" rel="file-typeahead-objects-L2">2</span>
+          <span class="line-number" id="file-typeahead-objects-L3" rel="file-typeahead-objects-L3">3</span>
+          <span class="line-number" id="file-typeahead-objects-L4" rel="file-typeahead-objects-L4">4</span>
+          <span class="line-number" id="file-typeahead-objects-L5" rel="file-typeahead-objects-L5">5</span>
+          <span class="line-number" id="file-typeahead-objects-L6" rel="file-typeahead-objects-L6">6</span>
+          <span class="line-number" id="file-typeahead-objects-L7" rel="file-typeahead-objects-L7">7</span>
+          <span class="line-number" id="file-typeahead-objects-L8" rel="file-typeahead-objects-L8">8</span>
+          <span class="line-number" id="file-typeahead-objects-L9" rel="file-typeahead-objects-L9">9</span>
+          <span class="line-number" id="file-typeahead-objects-L10" rel="file-typeahead-objects-L10">10</span>
+          <span class="line-number" id="file-typeahead-objects-L11" rel="file-typeahead-objects-L11">11</span>
+          <span class="line-number" id="file-typeahead-objects-L12" rel="file-typeahead-objects-L12">12</span>
+          <span class="line-number" id="file-typeahead-objects-L13" rel="file-typeahead-objects-L13">13</span>
+          <span class="line-number" id="file-typeahead-objects-L14" rel="file-typeahead-objects-L14">14</span>
+          <span class="line-number" id="file-typeahead-objects-L15" rel="file-typeahead-objects-L15">15</span>
+          <span class="line-number" id="file-typeahead-objects-L16" rel="file-typeahead-objects-L16">16</span>
+          <span class="line-number" id="file-typeahead-objects-L17" rel="file-typeahead-objects-L17">17</span>
+          <span class="line-number" id="file-typeahead-objects-L18" rel="file-typeahead-objects-L18">18</span>
+          <span class="line-number" id="file-typeahead-objects-L19" rel="file-typeahead-objects-L19">19</span>
+          <span class="line-number" id="file-typeahead-objects-L20" rel="file-typeahead-objects-L20">20</span>
+          <span class="line-number" id="file-typeahead-objects-L21" rel="file-typeahead-objects-L21">21</span>
+          <span class="line-number" id="file-typeahead-objects-L22" rel="file-typeahead-objects-L22">22</span>
+          <span class="line-number" id="file-typeahead-objects-L23" rel="file-typeahead-objects-L23">23</span>
+          <span class="line-number" id="file-typeahead-objects-L24" rel="file-typeahead-objects-L24">24</span>
+          <span class="line-number" id="file-typeahead-objects-L25" rel="file-typeahead-objects-L25">25</span>
+          <span class="line-number" id="file-typeahead-objects-L26" rel="file-typeahead-objects-L26">26</span>
+          <span class="line-number" id="file-typeahead-objects-L27" rel="file-typeahead-objects-L27">27</span>
+          <span class="line-number" id="file-typeahead-objects-L28" rel="file-typeahead-objects-L28">28</span>
+          <span class="line-number" id="file-typeahead-objects-L29" rel="file-typeahead-objects-L29">29</span>
+          <span class="line-number" id="file-typeahead-objects-L30" rel="file-typeahead-objects-L30">30</span>
+          <span class="line-number" id="file-typeahead-objects-L31" rel="file-typeahead-objects-L31">31</span>
+          <span class="line-number" id="file-typeahead-objects-L32" rel="file-typeahead-objects-L32">32</span>
+          <span class="line-number" id="file-typeahead-objects-L33" rel="file-typeahead-objects-L33">33</span>
+          <span class="line-number" id="file-typeahead-objects-L34" rel="file-typeahead-objects-L34">34</span>
+          <span class="line-number" id="file-typeahead-objects-L35" rel="file-typeahead-objects-L35">35</span>
+          <span class="line-number" id="file-typeahead-objects-L36" rel="file-typeahead-objects-L36">36</span>
+          <span class="line-number" id="file-typeahead-objects-L37" rel="file-typeahead-objects-L37">37</span>
+          <span class="line-number" id="file-typeahead-objects-L38" rel="file-typeahead-objects-L38">38</span>
+          <span class="line-number" id="file-typeahead-objects-L39" rel="file-typeahead-objects-L39">39</span>
+          <span class="line-number" id="file-typeahead-objects-L40" rel="file-typeahead-objects-L40">40</span>
+          <span class="line-number" id="file-typeahead-objects-L41" rel="file-typeahead-objects-L41">41</span>
+          <span class="line-number" id="file-typeahead-objects-L42" rel="file-typeahead-objects-L42">42</span>
+          <span class="line-number" id="file-typeahead-objects-L43" rel="file-typeahead-objects-L43">43</span>
+          <span class="line-number" id="file-typeahead-objects-L44" rel="file-typeahead-objects-L44">44</span>
+          <span class="line-number" id="file-typeahead-objects-L45" rel="file-typeahead-objects-L45">45</span>
+          <span class="line-number" id="file-typeahead-objects-L46" rel="file-typeahead-objects-L46">46</span>
+          <span class="line-number" id="file-typeahead-objects-L47" rel="file-typeahead-objects-L47">47</span>
+          <span class="line-number" id="file-typeahead-objects-L48" rel="file-typeahead-objects-L48">48</span>
+          <span class="line-number" id="file-typeahead-objects-L49" rel="file-typeahead-objects-L49">49</span>
+          <span class="line-number" id="file-typeahead-objects-L50" rel="file-typeahead-objects-L50">50</span>
+          <span class="line-number" id="file-typeahead-objects-L51" rel="file-typeahead-objects-L51">51</span>
+          <span class="line-number" id="file-typeahead-objects-L52" rel="file-typeahead-objects-L52">52</span>
+          <span class="line-number" id="file-typeahead-objects-L53" rel="file-typeahead-objects-L53">53</span>
+          <span class="line-number" id="file-typeahead-objects-L54" rel="file-typeahead-objects-L54">54</span>
+          <span class="line-number" id="file-typeahead-objects-L55" rel="file-typeahead-objects-L55">55</span>
+          <span class="line-number" id="file-typeahead-objects-L56" rel="file-typeahead-objects-L56">56</span>
+          <span class="line-number" id="file-typeahead-objects-L57" rel="file-typeahead-objects-L57">57</span>
+          <span class="line-number" id="file-typeahead-objects-L58" rel="file-typeahead-objects-L58">58</span>
+          <span class="line-number" id="file-typeahead-objects-L59" rel="file-typeahead-objects-L59">59</span>
+          <span class="line-number" id="file-typeahead-objects-L60" rel="file-typeahead-objects-L60">60</span>
+          <span class="line-number" id="file-typeahead-objects-L61" rel="file-typeahead-objects-L61">61</span>
+          <span class="line-number" id="file-typeahead-objects-L62" rel="file-typeahead-objects-L62">62</span>
+          <span class="line-number" id="file-typeahead-objects-L63" rel="file-typeahead-objects-L63">63</span>
+          <span class="line-number" id="file-typeahead-objects-L64" rel="file-typeahead-objects-L64">64</span>
+        </td>
+        <td class="line-data">
+          <pre class="line-pre"><div class="line" id="file-typeahead-objects-LC1">&lt;html&gt;</div><div class="line" id="file-typeahead-objects-LC2">&lt;head&gt;</div><div class="line" id="file-typeahead-objects-LC3">    &lt;link href="bootstrap.min.css" rel="stylesheet" type="text/css" /&gt;</div><div class="line" id="file-typeahead-objects-LC4">&lt;/head&gt;</div><div class="line" id="file-typeahead-objects-LC5">&lt;body&gt;</div><div class="line" id="file-typeahead-objects-LC6">&nbsp;</div><div class="line" id="file-typeahead-objects-LC7">&lt;div style="margin: 50px 50px"&gt;</div><div class="line" id="file-typeahead-objects-LC8">    &lt;label for="product_search"&gt;Product Search: &lt;/label&gt;</div><div class="line" id="file-typeahead-objects-LC9">    &lt;input id="product_search" type="text" data-provide="typeahead"&gt;</div><div class="line" id="file-typeahead-objects-LC10">&lt;/div&gt;</div><div class="line" id="file-typeahead-objects-LC11">&nbsp;</div><div class="line" id="file-typeahead-objects-LC12">&lt;script src="js/jquery-1.8.3.min.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-objects-LC13">&lt;script src="js/bootstrap-typeahead.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-objects-LC14">&lt;script src="js/underscore-min.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-objects-LC15">&nbsp;</div><div class="line" id="file-typeahead-objects-LC16">&lt;script&gt;</div><div class="line" id="file-typeahead-objects-LC17">    $(document).ready(function($) {</div><div class="line" id="file-typeahead-objects-LC18">        // Workaround for bug in mouse item selection</div><div class="line" id="file-typeahead-objects-LC19">        $.fn.typeahead.Constructor.prototype.blur = function() {</div><div class="line" id="file-typeahead-objects-LC20">            var that = this;</div><div class="line" id="file-typeahead-objects-LC21">            setTimeout(function () { that.hide() }, 250);</div><div class="line" id="file-typeahead-objects-LC22">        };</div><div class="line" id="file-typeahead-objects-LC23">&nbsp;</div><div class="line" id="file-typeahead-objects-LC24">        var products = [</div><div class="line" id="file-typeahead-objects-LC25">            {</div><div class="line" id="file-typeahead-objects-LC26">                id: 0,</div><div class="line" id="file-typeahead-objects-LC27">                name: "Deluxe Bicycle",</div><div class="line" id="file-typeahead-objects-LC28">                price: 499.98</div><div class="line" id="file-typeahead-objects-LC29">            },</div><div class="line" id="file-typeahead-objects-LC30">            {</div><div class="line" id="file-typeahead-objects-LC31">                id: 1,</div><div class="line" id="file-typeahead-objects-LC32">                name: "Super Deluxe Trampoline",</div><div class="line" id="file-typeahead-objects-LC33">                price: 134.99</div><div class="line" id="file-typeahead-objects-LC34">            },</div><div class="line" id="file-typeahead-objects-LC35">            {</div><div class="line" id="file-typeahead-objects-LC36">                id: 2,</div><div class="line" id="file-typeahead-objects-LC37">                name: "Super Duper Scooter",</div><div class="line" id="file-typeahead-objects-LC38">                price: 49.95</div><div class="line" id="file-typeahead-objects-LC39">            }</div><div class="line" id="file-typeahead-objects-LC40">        ];</div><div class="line" id="file-typeahead-objects-LC41">&nbsp;</div><div class="line" id="file-typeahead-objects-LC42">        $('#product_search').typeahead({</div><div class="line" id="file-typeahead-objects-LC43">            source: function(query, process) {</div><div class="line" id="file-typeahead-objects-LC44">                var results = _.map(products, function(product) {</div><div class="line" id="file-typeahead-objects-LC45">                   return product.name;</div><div class="line" id="file-typeahead-objects-LC46">                });</div><div class="line" id="file-typeahead-objects-LC47">                process(results);</div><div class="line" id="file-typeahead-objects-LC48">            },</div><div class="line" id="file-typeahead-objects-LC49">&nbsp;</div><div class="line" id="file-typeahead-objects-LC50">            highlighter: function(item) {</div><div class="line" id="file-typeahead-objects-LC51">                return "==&gt;" + item + "&lt;==";</div><div class="line" id="file-typeahead-objects-LC52">            },</div><div class="line" id="file-typeahead-objects-LC53">&nbsp;</div><div class="line" id="file-typeahead-objects-LC54">            updater: function(item) {</div><div class="line" id="file-typeahead-objects-LC55">                console.log("'" + item + "' selected.");</div><div class="line" id="file-typeahead-objects-LC56">                return item;</div><div class="line" id="file-typeahead-objects-LC57">            }</div><div class="line" id="file-typeahead-objects-LC58">&nbsp;</div><div class="line" id="file-typeahead-objects-LC59">        });</div><div class="line" id="file-typeahead-objects-LC60">    })</div><div class="line" id="file-typeahead-objects-LC61">&lt;/script&gt;</div><div class="line" id="file-typeahead-objects-LC62">&nbsp;</div><div class="line" id="file-typeahead-objects-LC63">&lt;/body&gt;</div><div class="line" id="file-typeahead-objects-LC64">&lt;/html&gt;</div></pre>
+        </td>
+      </tr>
+    </tbody></table>
+  </div>
+
+        </div>
+
+        <div class="gist-meta">
+          <a href="https://gist.github.com/awgreenblatt/4499728/raw/f645c464c05b0fd6ff7b665d78e9c06e6be307e5/typeahead-objects" style="float:right">view raw</a>
+          <a href="https://gist.github.com/awgreenblatt/4499728#file-typeahead-objects" style="float:right; margin-right:10px; color:#666;">typeahead-objects</a>
+          <a href="https://gist.github.com/awgreenblatt/4499728">This Gist</a> brought to you by <a href="https://github.com">GitHub</a>.
+        </div>
+      </div>
+</div>
+
+<p>The main difference here, other than the declaration of the products array is in the source override. We generate an array of strings based off the name property of each product object. If you wanted to expand this example to retrieve your list of objects from the server, in your source function override you would make your AJAX call, and call process() on the results from the asynchronous response.</p>
+<p>But that’s not really what I want. I want to display the name and price of each object in the list of typeahead options. And I want to display the selected item with all of its details.</p>
+<p>What we need to do first is instead of having the source function return an array of strings, we’re going to have it return an array of product ids. Since the ids are numbers, and process() is expecting an array of strings, we convert each id to a string first.</p>
+<p>The typeahead component is then going to call matcher() for every item, to make sure that, by default the original query string is a substring of the item. Since our item is simply the product id, that’s not going to work, so we need to override that. For simplicity sake, I just always return true, but you could use the product id to get the product from the list of products, and then check that product’s name against the query if you wanted.</p>
+<p>Next, in the highlighter() method, I use Underscore’s find() method to find the product in the array of products based on the product id, and then display a combination of the product name and price.</p>
+<p>Finally, in the updater() method, which is called when an item is selected, I find the selected product just as we did in highlighter(), but now I call that.setSelectedProduct() with the product name. <em>that</em> is defined using closure outside of the typeahead() call on the element, as is setSelectedProduct(). You could have setSelectedProduct’s functionality right in updater() but I thought it might be nice to pull it out of the updater() code to make it a little more reusable.</p>
+<p>Last but not least updater() returns the product name, so that is what you are left with in the input element.</p>
+<p>Here’s the working example:</p>
+<p><label for="product_search_5">Product Search: </label><input id="product_search_5" type="text" data-provide="typeahead"></p>
+<div id="product" style="padding: 5px; border-style: solid; display: none;"></div>
+<p>and here is the full and final source:</p>
+<script src="https://gist.github.com/4499835.js"></script><link href="https://gist.github.com/assets/embed-bfcadee384027982121fdeb9930e78b2.css" media="screen" rel="stylesheet"><div id="gist4499835" class="gist">
+      <div class="gist-file">
+        <div class="gist-data gist-syntax">
+
+
+
+  <div class="file-data">
+    <table cellpadding="0" cellspacing="0" class="lines highlight">
+      <tbody><tr>
+        <td class="line-numbers">
+          <span class="line-number" id="file-typeahead-final-L1" rel="file-typeahead-final-L1">1</span>
+          <span class="line-number" id="file-typeahead-final-L2" rel="file-typeahead-final-L2">2</span>
+          <span class="line-number" id="file-typeahead-final-L3" rel="file-typeahead-final-L3">3</span>
+          <span class="line-number" id="file-typeahead-final-L4" rel="file-typeahead-final-L4">4</span>
+          <span class="line-number" id="file-typeahead-final-L5" rel="file-typeahead-final-L5">5</span>
+          <span class="line-number" id="file-typeahead-final-L6" rel="file-typeahead-final-L6">6</span>
+          <span class="line-number" id="file-typeahead-final-L7" rel="file-typeahead-final-L7">7</span>
+          <span class="line-number" id="file-typeahead-final-L8" rel="file-typeahead-final-L8">8</span>
+          <span class="line-number" id="file-typeahead-final-L9" rel="file-typeahead-final-L9">9</span>
+          <span class="line-number" id="file-typeahead-final-L10" rel="file-typeahead-final-L10">10</span>
+          <span class="line-number" id="file-typeahead-final-L11" rel="file-typeahead-final-L11">11</span>
+          <span class="line-number" id="file-typeahead-final-L12" rel="file-typeahead-final-L12">12</span>
+          <span class="line-number" id="file-typeahead-final-L13" rel="file-typeahead-final-L13">13</span>
+          <span class="line-number" id="file-typeahead-final-L14" rel="file-typeahead-final-L14">14</span>
+          <span class="line-number" id="file-typeahead-final-L15" rel="file-typeahead-final-L15">15</span>
+          <span class="line-number" id="file-typeahead-final-L16" rel="file-typeahead-final-L16">16</span>
+          <span class="line-number" id="file-typeahead-final-L17" rel="file-typeahead-final-L17">17</span>
+          <span class="line-number" id="file-typeahead-final-L18" rel="file-typeahead-final-L18">18</span>
+          <span class="line-number" id="file-typeahead-final-L19" rel="file-typeahead-final-L19">19</span>
+          <span class="line-number" id="file-typeahead-final-L20" rel="file-typeahead-final-L20">20</span>
+          <span class="line-number" id="file-typeahead-final-L21" rel="file-typeahead-final-L21">21</span>
+          <span class="line-number" id="file-typeahead-final-L22" rel="file-typeahead-final-L22">22</span>
+          <span class="line-number" id="file-typeahead-final-L23" rel="file-typeahead-final-L23">23</span>
+          <span class="line-number" id="file-typeahead-final-L24" rel="file-typeahead-final-L24">24</span>
+          <span class="line-number" id="file-typeahead-final-L25" rel="file-typeahead-final-L25">25</span>
+          <span class="line-number" id="file-typeahead-final-L26" rel="file-typeahead-final-L26">26</span>
+          <span class="line-number" id="file-typeahead-final-L27" rel="file-typeahead-final-L27">27</span>
+          <span class="line-number" id="file-typeahead-final-L28" rel="file-typeahead-final-L28">28</span>
+          <span class="line-number" id="file-typeahead-final-L29" rel="file-typeahead-final-L29">29</span>
+          <span class="line-number" id="file-typeahead-final-L30" rel="file-typeahead-final-L30">30</span>
+          <span class="line-number" id="file-typeahead-final-L31" rel="file-typeahead-final-L31">31</span>
+          <span class="line-number" id="file-typeahead-final-L32" rel="file-typeahead-final-L32">32</span>
+          <span class="line-number" id="file-typeahead-final-L33" rel="file-typeahead-final-L33">33</span>
+          <span class="line-number" id="file-typeahead-final-L34" rel="file-typeahead-final-L34">34</span>
+          <span class="line-number" id="file-typeahead-final-L35" rel="file-typeahead-final-L35">35</span>
+          <span class="line-number" id="file-typeahead-final-L36" rel="file-typeahead-final-L36">36</span>
+          <span class="line-number" id="file-typeahead-final-L37" rel="file-typeahead-final-L37">37</span>
+          <span class="line-number" id="file-typeahead-final-L38" rel="file-typeahead-final-L38">38</span>
+          <span class="line-number" id="file-typeahead-final-L39" rel="file-typeahead-final-L39">39</span>
+          <span class="line-number" id="file-typeahead-final-L40" rel="file-typeahead-final-L40">40</span>
+          <span class="line-number" id="file-typeahead-final-L41" rel="file-typeahead-final-L41">41</span>
+          <span class="line-number" id="file-typeahead-final-L42" rel="file-typeahead-final-L42">42</span>
+          <span class="line-number" id="file-typeahead-final-L43" rel="file-typeahead-final-L43">43</span>
+          <span class="line-number" id="file-typeahead-final-L44" rel="file-typeahead-final-L44">44</span>
+          <span class="line-number" id="file-typeahead-final-L45" rel="file-typeahead-final-L45">45</span>
+          <span class="line-number" id="file-typeahead-final-L46" rel="file-typeahead-final-L46">46</span>
+          <span class="line-number" id="file-typeahead-final-L47" rel="file-typeahead-final-L47">47</span>
+          <span class="line-number" id="file-typeahead-final-L48" rel="file-typeahead-final-L48">48</span>
+          <span class="line-number" id="file-typeahead-final-L49" rel="file-typeahead-final-L49">49</span>
+          <span class="line-number" id="file-typeahead-final-L50" rel="file-typeahead-final-L50">50</span>
+          <span class="line-number" id="file-typeahead-final-L51" rel="file-typeahead-final-L51">51</span>
+          <span class="line-number" id="file-typeahead-final-L52" rel="file-typeahead-final-L52">52</span>
+          <span class="line-number" id="file-typeahead-final-L53" rel="file-typeahead-final-L53">53</span>
+          <span class="line-number" id="file-typeahead-final-L54" rel="file-typeahead-final-L54">54</span>
+          <span class="line-number" id="file-typeahead-final-L55" rel="file-typeahead-final-L55">55</span>
+          <span class="line-number" id="file-typeahead-final-L56" rel="file-typeahead-final-L56">56</span>
+          <span class="line-number" id="file-typeahead-final-L57" rel="file-typeahead-final-L57">57</span>
+          <span class="line-number" id="file-typeahead-final-L58" rel="file-typeahead-final-L58">58</span>
+          <span class="line-number" id="file-typeahead-final-L59" rel="file-typeahead-final-L59">59</span>
+          <span class="line-number" id="file-typeahead-final-L60" rel="file-typeahead-final-L60">60</span>
+          <span class="line-number" id="file-typeahead-final-L61" rel="file-typeahead-final-L61">61</span>
+          <span class="line-number" id="file-typeahead-final-L62" rel="file-typeahead-final-L62">62</span>
+          <span class="line-number" id="file-typeahead-final-L63" rel="file-typeahead-final-L63">63</span>
+          <span class="line-number" id="file-typeahead-final-L64" rel="file-typeahead-final-L64">64</span>
+          <span class="line-number" id="file-typeahead-final-L65" rel="file-typeahead-final-L65">65</span>
+          <span class="line-number" id="file-typeahead-final-L66" rel="file-typeahead-final-L66">66</span>
+          <span class="line-number" id="file-typeahead-final-L67" rel="file-typeahead-final-L67">67</span>
+          <span class="line-number" id="file-typeahead-final-L68" rel="file-typeahead-final-L68">68</span>
+          <span class="line-number" id="file-typeahead-final-L69" rel="file-typeahead-final-L69">69</span>
+          <span class="line-number" id="file-typeahead-final-L70" rel="file-typeahead-final-L70">70</span>
+          <span class="line-number" id="file-typeahead-final-L71" rel="file-typeahead-final-L71">71</span>
+          <span class="line-number" id="file-typeahead-final-L72" rel="file-typeahead-final-L72">72</span>
+          <span class="line-number" id="file-typeahead-final-L73" rel="file-typeahead-final-L73">73</span>
+          <span class="line-number" id="file-typeahead-final-L74" rel="file-typeahead-final-L74">74</span>
+          <span class="line-number" id="file-typeahead-final-L75" rel="file-typeahead-final-L75">75</span>
+          <span class="line-number" id="file-typeahead-final-L76" rel="file-typeahead-final-L76">76</span>
+          <span class="line-number" id="file-typeahead-final-L77" rel="file-typeahead-final-L77">77</span>
+          <span class="line-number" id="file-typeahead-final-L78" rel="file-typeahead-final-L78">78</span>
+          <span class="line-number" id="file-typeahead-final-L79" rel="file-typeahead-final-L79">79</span>
+          <span class="line-number" id="file-typeahead-final-L80" rel="file-typeahead-final-L80">80</span>
+          <span class="line-number" id="file-typeahead-final-L81" rel="file-typeahead-final-L81">81</span>
+          <span class="line-number" id="file-typeahead-final-L82" rel="file-typeahead-final-L82">82</span>
+          <span class="line-number" id="file-typeahead-final-L83" rel="file-typeahead-final-L83">83</span>
+        </td>
+        <td class="line-data">
+          <pre class="line-pre"><div class="line" id="file-typeahead-final-LC1">&lt;html&gt;</div><div class="line" id="file-typeahead-final-LC2">&lt;head&gt;</div><div class="line" id="file-typeahead-final-LC3">    &lt;link href="bootstrap.min.css" rel="stylesheet" type="text/css" /&gt;</div><div class="line" id="file-typeahead-final-LC4">&lt;/head&gt;</div><div class="line" id="file-typeahead-final-LC5">&lt;body&gt;</div><div class="line" id="file-typeahead-final-LC6">&nbsp;</div><div class="line" id="file-typeahead-final-LC7">&lt;div style="margin: 50px 50px"&gt;</div><div class="line" id="file-typeahead-final-LC8">    &lt;label for="product_search"&gt;Product Search: &lt;/label&gt;</div><div class="line" id="file-typeahead-final-LC9">    &lt;input id="product_search" type="text" data-provide="typeahead"&gt;</div><div class="line" id="file-typeahead-final-LC10">    &lt;div id="product" style="border-width:1; padding: 5px; border-style: solid"&gt;&lt;/div&gt;</div><div class="line" id="file-typeahead-final-LC11">&lt;/div&gt;</div><div class="line" id="file-typeahead-final-LC12">&nbsp;</div><div class="line" id="file-typeahead-final-LC13">&lt;script src="js/jquery-1.8.3.min.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-final-LC14">&lt;script src="js/bootstrap-typeahead.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-final-LC15">&lt;script src="js/underscore-min.js"&gt;&lt;/script&gt;</div><div class="line" id="file-typeahead-final-LC16">&nbsp;</div><div class="line" id="file-typeahead-final-LC17">&lt;script&gt;</div><div class="line" id="file-typeahead-final-LC18">    $(document).ready(function($) {</div><div class="line" id="file-typeahead-final-LC19">        // Workaround for bug in mouse item selection</div><div class="line" id="file-typeahead-final-LC20">        $.fn.typeahead.Constructor.prototype.blur = function() {</div><div class="line" id="file-typeahead-final-LC21">            var that = this;</div><div class="line" id="file-typeahead-final-LC22">            setTimeout(function () { that.hide() }, 250);</div><div class="line" id="file-typeahead-final-LC23">        };</div><div class="line" id="file-typeahead-final-LC24">&nbsp;</div><div class="line" id="file-typeahead-final-LC25">        var products = [</div><div class="line" id="file-typeahead-final-LC26">            {</div><div class="line" id="file-typeahead-final-LC27">                id: 0,</div><div class="line" id="file-typeahead-final-LC28">                name: "Deluxe Bicycle",</div><div class="line" id="file-typeahead-final-LC29">                price: 499.98</div><div class="line" id="file-typeahead-final-LC30">            },</div><div class="line" id="file-typeahead-final-LC31">            {</div><div class="line" id="file-typeahead-final-LC32">                id: 1,</div><div class="line" id="file-typeahead-final-LC33">                name: "Super Deluxe Trampoline",</div><div class="line" id="file-typeahead-final-LC34">                price: 134.99</div><div class="line" id="file-typeahead-final-LC35">            },</div><div class="line" id="file-typeahead-final-LC36">            {</div><div class="line" id="file-typeahead-final-LC37">                id: 2,</div><div class="line" id="file-typeahead-final-LC38">                name: "Super Duper Scooter",</div><div class="line" id="file-typeahead-final-LC39">                price: 49.95</div><div class="line" id="file-typeahead-final-LC40">            }</div><div class="line" id="file-typeahead-final-LC41">        ];</div><div class="line" id="file-typeahead-final-LC42">&nbsp;</div><div class="line" id="file-typeahead-final-LC43">        var that = this;</div><div class="line" id="file-typeahead-final-LC44">&nbsp;</div><div class="line" id="file-typeahead-final-LC45">        $('#product_search').typeahead({</div><div class="line" id="file-typeahead-final-LC46">            source: function(query, process) {</div><div class="line" id="file-typeahead-final-LC47">                $('#product').hide();</div><div class="line" id="file-typeahead-final-LC48">                var results = _.map(products, function(product) {</div><div class="line" id="file-typeahead-final-LC49">                   return product.id + "";</div><div class="line" id="file-typeahead-final-LC50">                });</div><div class="line" id="file-typeahead-final-LC51">                process(results);</div><div class="line" id="file-typeahead-final-LC52">            },</div><div class="line" id="file-typeahead-final-LC53">&nbsp;</div><div class="line" id="file-typeahead-final-LC54">            matcher: function(item) {</div><div class="line" id="file-typeahead-final-LC55">                return true;</div><div class="line" id="file-typeahead-final-LC56">            },</div><div class="line" id="file-typeahead-final-LC57">&nbsp;</div><div class="line" id="file-typeahead-final-LC58">            highlighter: function(id) {</div><div class="line" id="file-typeahead-final-LC59">                var product = _.find(products, function(p) {</div><div class="line" id="file-typeahead-final-LC60">                   return p.id == id;</div><div class="line" id="file-typeahead-final-LC61">                });</div><div class="line" id="file-typeahead-final-LC62">                return product.name + " ($" + product.price + ")";</div><div class="line" id="file-typeahead-final-LC63">            },</div><div class="line" id="file-typeahead-final-LC64">&nbsp;</div><div class="line" id="file-typeahead-final-LC65">            updater: function(id) {</div><div class="line" id="file-typeahead-final-LC66">                var product = _.find(products, function(p) {</div><div class="line" id="file-typeahead-final-LC67">                    return p.id == id;</div><div class="line" id="file-typeahead-final-LC68">                });</div><div class="line" id="file-typeahead-final-LC69">                that.setSelectedProduct(product);</div><div class="line" id="file-typeahead-final-LC70">                return product.name;</div><div class="line" id="file-typeahead-final-LC71">            }</div><div class="line" id="file-typeahead-final-LC72">&nbsp;</div><div class="line" id="file-typeahead-final-LC73">        });</div><div class="line" id="file-typeahead-final-LC74">&nbsp;</div><div class="line" id="file-typeahead-final-LC75">        $('#product').hide();</div><div class="line" id="file-typeahead-final-LC76">        this.setSelectedProduct = function(product) {</div><div class="line" id="file-typeahead-final-LC77">            $('#product').html("Purchase: &lt;strong&gt;" + product.name + " ($" + product.price + ")&lt;/strong&gt;").show();</div><div class="line" id="file-typeahead-final-LC78">        }</div><div class="line" id="file-typeahead-final-LC79">    })</div><div class="line" id="file-typeahead-final-LC80">&lt;/script&gt;</div><div class="line" id="file-typeahead-final-LC81">&nbsp;</div><div class="line" id="file-typeahead-final-LC82">&lt;/body&gt;</div><div class="line" id="file-typeahead-final-LC83">&lt;/html&gt;</div></pre>
+        </td>
+      </tr>
+    </tbody></table>
+  </div>
+
+        </div>
+
+        <div class="gist-meta">
+          <a href="https://gist.github.com/awgreenblatt/4499835/raw/3a40eaf53d19da5200832709d520299b85f32d89/typeahead-final" style="float:right">view raw</a>
+          <a href="https://gist.github.com/awgreenblatt/4499835#file-typeahead-final" style="float:right; margin-right:10px; color:#666;">typeahead-final</a>
+          <a href="https://gist.github.com/awgreenblatt/4499835">This Gist</a> brought to you by <a href="https://github.com">GitHub</a>.
+        </div>
+      </div>
+</div>
+<noscript>&lt;pre&gt;&lt;code class="language- "&gt;&amp;lt;html&amp;gt;
+&amp;lt;head&amp;gt;
+    &amp;lt;link href=&amp;quot;bootstrap.min.css&amp;quot; rel=&amp;quot;stylesheet&amp;quot; type=&amp;quot;text/css&amp;quot; /&amp;gt;
+&amp;lt;/head&amp;gt;
+&amp;lt;body&amp;gt;
+
+&amp;lt;div style=&amp;quot;margin: 50px 50px&amp;quot;&amp;gt;
+    &amp;lt;label for=&amp;quot;product_search&amp;quot;&amp;gt;Product Search: &amp;lt;/label&amp;gt;
+    &amp;lt;input id=&amp;quot;product_search&amp;quot; type=&amp;quot;text&amp;quot; data-provide=&amp;quot;typeahead&amp;quot;&amp;gt;
+    &amp;lt;div id=&amp;quot;product&amp;quot; style=&amp;quot;border-width:1; padding: 5px; border-style: solid&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;
+&amp;lt;/div&amp;gt;
+
+&amp;lt;script src=&amp;quot;js/jquery-1.8.3.min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;js/bootstrap-typeahead.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+&amp;lt;script src=&amp;quot;js/underscore-min.js&amp;quot;&amp;gt;&amp;lt;/script&amp;gt;
+
+&amp;lt;script&amp;gt;
+    $(document).ready(function($) {
+        // Workaround for bug in mouse item selection
+        $.fn.typeahead.Constructor.prototype.blur = function() {
+            var that = this;
+            setTimeout(function () { that.hide() }, 250);
+        };
+
+        var products = [
+            {
+                id: 0,
+                name: &amp;quot;Deluxe Bicycle&amp;quot;,
+                price: 499.98
+            },
+            {
+                id: 1,
+                name: &amp;quot;Super Deluxe Trampoline&amp;quot;,
+                price: 134.99
+            },
+            {
+                id: 2,
+                name: &amp;quot;Super Duper Scooter&amp;quot;,
+                price: 49.95
+            }
+        ];
+
+        var that = this;
+
+        $('#product_search').typeahead({
+            source: function(query, process) {
+                $('#product').hide();
+                var results = _.map(products, function(product) {
+                   return product.id + &amp;quot;&amp;quot;;
+                });
+                process(results);
+            },
+
+            matcher: function(item) {
+                return true;
+            },
+
+            highlighter: function(id) {
+                var product = _.find(products, function(p) {
+                   return p.id == id;
+                });
+                return product.name + &amp;quot; ($&amp;quot; + product.price + &amp;quot;)&amp;quot;;
+            },
+
+            updater: function(id) {
+                var product = _.find(products, function(p) {
+                    return p.id == id;
+                });
+                that.setSelectedProduct(product);
+                return product.name;
+            }
+
+        });
+
+        $('#product').hide();
+        this.setSelectedProduct = function(product) {
+            $('#product').html(&amp;quot;Purchase: &amp;lt;strong&amp;gt;&amp;quot; + product.name + &amp;quot; ($&amp;quot; + product.price + &amp;quot;)&amp;lt;/strong&amp;gt;&amp;quot;).show();
+        }
+    })
+&amp;lt;/script&amp;gt;
+
+&amp;lt;/body&amp;gt;
+&amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;</noscript>
+<p>Hopefully this should all make implementing real-world typeahead a little easier.</p>
+<div class="alert"><strong>Update June 4, 2013:</strong>&nbsp; The Twitter Bootstrap team have announced that for v3, they are going to be moving to Twitter’s typeahead.js instead of the current Twitter Bootstrap Typeahead component. &nbsp;I’ve <a title="Twitter Bootstrap typeahead.js with underscore.js Tutorial" href="http://blattchat.com/2013/06/04/twitter-bootstrap-typeahead-js-with-underscore-js-tutorial/">written an article</a> on how you can use typeahead.js right now with Twitter Bootstrap.</div>
+<div class="yarpp-related">
+<h3>Related Posts:</h3>
+
+<ul><li><a href="http://blattchat.com/2013/06/04/twitter-bootstrap-typeahead-js-with-underscore-js-tutorial/" rel="bookmark">Twitter Bootstrap typeahead.js with underscore.js Templating – A Tutorial</a><!-- (15.3)--></li><li><a href="http://blattchat.com/2013/01/29/building-web-applications-with-wordpress/" rel="bookmark">Building Data-Driven Web Applications with WordPress  (WordPress App Design part 3)</a><!-- (4)--></li></ul>
+</div>
+											</div><!-- .entry-content -->
+
+
+					<div class="entry-utility">
+						<span class="bl_posted">Tagged <a href="http://blattchat.com/tag/autocomplete/" rel="tag">autocomplete</a>, <a href="http://blattchat.com/tag/bootstrap/" rel="tag">bootstrap</a>, <a href="http://blattchat.com/tag/twitter/" rel="tag">twitter</a>, <a href="http://blattchat.com/tag/typeahead/" rel="tag">typeahead</a>.</span><span class="bl_bookmark"> Bookmark the  <a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/" title="Permalink to Twitter Boostrap Typeahead Tutorial" rel="bookmark"> permalink</a>.</span>											</div><!-- .entry-utility -->
+				</div><!-- #post-## -->
+
+				<div id="nav-below" class="navigation">
+					<div class="nav-previous"><a href="http://blattchat.com/2012/12/14/adobe-techlive-is-live/" rel="prev"><span class="meta-nav">«</span> Adobe TechLive is Live!</a></div>
+					<div class="nav-next"><a href="http://blattchat.com/2013/01/14/building-a-rest-interface-with-wordpress/" rel="next">Building a REST interface with WordPress (WordPress App Design Part 2) <span class="meta-nav">»</span></a></div>
+				</div><!-- #nav-below -->
+
+				
+			<div id="comments">
+
+
+			<h3 id="comments-title">
+				18 Responses to <em>Twitter Boostrap Typeahead Tutorial</em>			</h3>
+
+	<ol class="commentlist">
+			
+			<li class="comment even thread-even depth-1" id="li-comment-5998">
+		<div id="comment-5998">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/1656de342d60999708b4974e2f2f9b91?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Nick Karnik</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-5998">
+			March 15, 2013 at 4:30 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Thanks for this fantastic tutorial! I checked out the other project and it’s not being maintained anymore. It has links to three others, but I don’t see an immediate need to switch.</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=5998#respond" onclick="return addComment.moveForm(&quot;comment-5998&quot;, &quot;5998&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-agreenblatt bypostauthor odd alt depth-2" id="li-comment-7333">
+		<div id="comment-7333">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/d0cb03bc0a266ac60f761929bacbc216?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn"><a href="http://blattchat.com" rel="external nofollow" class="url">agreenblatt</a></cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7333">
+			June 4, 2013 at 10:34 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Thanks Nick.  I’ll take out the notice so as not to lead people astray.</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=7333#respond" onclick="return addComment.moveForm(&quot;comment-7333&quot;, &quot;7333&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+</ul>
+</li>
+	<li class="comment even thread-odd thread-alt depth-1" id="li-comment-6077">
+		<div id="comment-6077">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/bcfda55cfaa613abb8869eb9f177784d?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Tony Dew</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6077">
+			March 20, 2013 at 2:42 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Thank you for the post, however, there might be a little bit easier way to solve the “missed mouse click” bug without introducing a delay. </p>
+<p><code><br>
+$('.typeahead').live('mousedown', function(e) {<br>
+	e.preventDefault();<br>
+});<br>
+</code></p>
+<p>It’s not my solution, I found it here:</p>
+<p><a href="https://github.com/twitter/bootstrap/issues/4018#issuecomment-12299398" onclick="javascript:_gaq.push(['_trackEvent','outbound-comment','http://github.com']);" rel="nofollow">https://github.com/twitter/bootstrap/issues/4018#issuecomment-12299398</a></p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6077#respond" onclick="return addComment.moveForm(&quot;comment-6077&quot;, &quot;6077&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-agreenblatt bypostauthor odd alt depth-2" id="li-comment-6106">
+		<div id="comment-6106">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/d0cb03bc0a266ac60f761929bacbc216?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn"><a href="http://blattchat.com" rel="external nofollow" class="url">agreenblatt</a></cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6106">
+			March 22, 2013 at 1:07 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Thanks for that Tony.  I’ll have to give that a try.</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6106#respond" onclick="return addComment.moveForm(&quot;comment-6106&quot;, &quot;6106&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment even depth-3" id="li-comment-6453">
+		<div id="comment-6453">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/3911c454f704bbc339f32bec584e5688?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Ryan</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6453">
+			April 14, 2013 at 10:58 am</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Note that the jQuery .live method is now deprecated and .on should be used.</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6453#respond" onclick="return addComment.moveForm(&quot;comment-6453&quot;, &quot;6453&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+</ul>
+</li>
+</ul>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-6314">
+		<div id="comment-6314">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/cd2f0ae4617476af515cb312f4143b86?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Ibrahim Awwal</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6314">
+			April 4, 2013 at 6:37 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Hmm, is it just me or is the last example broken? Regardless, great tutorial, the official documentation is a bit on the sparse side…</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6314#respond" onclick="return addComment.moveForm(&quot;comment-6314&quot;, &quot;6314&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment even depth-2" id="li-comment-6315">
+		<div id="comment-6315">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/cd2f0ae4617476af515cb312f4143b86?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Ibrahim Awwal</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6315">
+			April 4, 2013 at 6:40 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Oh I see, you made the matcher always return true. Should have read carefully!</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6315#respond" onclick="return addComment.moveForm(&quot;comment-6315&quot;, &quot;6315&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+</ul>
+</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-6413">
+		<div id="comment-6413">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/eff4178375b2e04eaf5043c40aeb154f?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Michel fonteneau</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6413">
+			April 11, 2013 at 5:47 am</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Hello Great tuto!<br>
+I am facing an issue I change all my french character to the correspondant in ascii, but when I’m typing a word as soon as I enter the foreign letter it passby the word. like for “Champs-Élysées” (code Champs-Élysées int the return array) at “É” it remove the choice in the selected list.</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6413#respond" onclick="return addComment.moveForm(&quot;comment-6413&quot;, &quot;6413&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-agreenblatt bypostauthor even depth-2" id="li-comment-7324">
+		<div id="comment-7324">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/d0cb03bc0a266ac60f761929bacbc216?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn"><a href="http://blattchat.com" rel="external nofollow" class="url">agreenblatt</a></cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7324">
+			June 4, 2013 at 12:13 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Michel,</p>
+<p>If you have some sample code I can try out, I’d be happy to take a look.</p>
+<p>Alan</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=7324#respond" onclick="return addComment.moveForm(&quot;comment-7324&quot;, &quot;7324&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+</ul>
+</li>
+	<li class="comment odd alt thread-even depth-1" id="li-comment-6680">
+		<div id="comment-6680">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/e4d68e3bb9fe7d4779ac480998d2c347?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Heiko</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6680">
+			May 14, 2013 at 1:23 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Hallo Alan,<br>
+how can i jump to a other html site when i click on a word.<br>
+Same like on google…???????<br>
+Greetings</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6680#respond" onclick="return addComment.moveForm(&quot;comment-6680&quot;, &quot;6680&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-agreenblatt bypostauthor even depth-2" id="li-comment-6749">
+		<div id="comment-6749">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/d0cb03bc0a266ac60f761929bacbc216?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn"><a href="http://blattchat.com" rel="external nofollow" class="url">agreenblatt</a></cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-6749">
+			May 17, 2013 at 4:26 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Heiko -</p>
+<p>When you do a search in Google, the typeahead helps you choose words to search on, but then ultimately it updates the current page with result links, any of which you can click on to jump to another site.<br>
+Similarly, if you look in the post above, I specify an updater in the typeahead options which is called when the user selects a word.  Currently, I have this set to write out the selected item to the console.  You could instead use this function to either directly jump to another site, or to update the display and include some links to other sites.</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=6749#respond" onclick="return addComment.moveForm(&quot;comment-6749&quot;, &quot;6749&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-3" id="li-comment-7358">
+		<div id="comment-7358">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/44c55459a72469267ae19d4b2dacf92d?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Logesh</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7358">
+			June 6, 2013 at 7:59 am</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Hi agreenblatt, could you give a sample code, it might be quite useful for learners like me,, thank oyu</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=7358#respond" onclick="return addComment.moveForm(&quot;comment-7358&quot;, &quot;7358&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment byuser comment-author-agreenblatt bypostauthor even depth-4" id="li-comment-7366">
+		<div id="comment-7366">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/d0cb03bc0a266ac60f761929bacbc216?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn"><a href="http://blattchat.com" rel="external nofollow" class="url">agreenblatt</a></cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7366">
+			June 6, 2013 at 3:33 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Logesh – What code are you looking for?  This post is filled with code.</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=7366#respond" onclick="return addComment.moveForm(&quot;comment-7366&quot;, &quot;7366&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	<ul class="children">
+	<li class="comment odd alt depth-5" id="li-comment-7371">
+		<div id="comment-7371">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/44c55459a72469267ae19d4b2dacf92d?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Logesh</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7371">
+			June 6, 2013 at 11:54 pm</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Hi agreenblatt , i am looking for the code to pass the link through the list items,am using jason for fetching the content from database. could you help me out.<br>
+thank’s for your reply..</p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment byuser comment-author-agreenblatt bypostauthor even depth-5" id="li-comment-7391">
+		<div id="comment-7391">
+		<div class="comment-author vcard">
+			<img alt="" src="http://1.gravatar.com/avatar/d0cb03bc0a266ac60f761929bacbc216?s=40&amp;d=http%3A%2F%2F1.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn"><a href="http://blattchat.com" rel="external nofollow" class="url">agreenblatt</a></cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7391">
+			June 7, 2013 at 11:52 am</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Logesh, it sounds like you’ve already managed to get the JSON response, and are just trying to figure out how to create the proper links.  If so, presuming your JSON objects have for instance product names &amp; URLs, something like: </p>
+<p>[<br>
+   {name: "Deluxe Bicycle", price: 499.98, url: "http://foo.com/products/1"},<br>
+   {name: "Super Deluxe Trampoline", price: 134.99, url: "http://foo.com/products/2"},<br>
+   {name: "Super Duper Scooter", price: 49.95, url: "http://foo.com/products/3"}<br>
+]</p>
+<p>then in <em>setSelectedProduct()</em> you could do something like:</p>
+<p><code>$('#product').html("Purchase: &lt;a href='" + product.url + "'&gt;" + product.name + " ($" + product.price + ")").show();</code></p>
+</div>
+
+		<div class="reply">
+					</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+	<li class="post pingback">
+		<p>Pingback: <a href="http://blattchat.com/2013/06/04/twitter-bootstrap-typeahead-js-with-underscore-js-templating-tutorial/" rel="external nofollow" class="url">Twitter Bootstrap typeahead.js with underscore.js Templating Tutorial - Alan Greenblatt</a></p>
+	</li>
+	<li class="comment odd alt thread-odd thread-alt depth-1" id="li-comment-7416">
+		<div id="comment-7416">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/44c55459a72469267ae19d4b2dacf92d?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Logesh</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7416">
+			June 8, 2013 at 7:04 am</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>Thank’s agreenblatt,, from your reply got an idea and I have linked using the code below,,<br>
+ updater: function (item)<br>
+ {<br>
+var index=tasks.indexOf(item);<br>
+if(index!=-1)<br>
+ {<br>
+window.location.href= lnk[index];<br>
+ }<br>
+ },</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=7416#respond" onclick="return addComment.moveForm(&quot;comment-7416&quot;, &quot;7416&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	<li class="comment even thread-even depth-1" id="li-comment-7417">
+		<div id="comment-7417">
+		<div class="comment-author vcard">
+			<img alt="" src="http://0.gravatar.com/avatar/44c55459a72469267ae19d4b2dacf92d?s=40&amp;d=http%3A%2F%2F0.gravatar.com%2Favatar%2Fad516503a11cd5ca435acc9bb6523536%3Fs%3D40&amp;r=G" class="avatar avatar-40 photo" height="40" width="40"><cite class="fn">Logesh</cite> <span class="says">says:</span>
+
+
+		</div><!-- .comment-author .vcard -->
+		
+		<div class="comment-meta commentmetadata"><a href="http://blattchat.com/2013/01/09/bootstrap-typeahead/#comment-7417">
+			June 8, 2013 at 7:06 am</a>		</div><!-- .comment-meta .commentmetadata -->
+
+		<div class="comment-body"><p>if(isset($data) &amp;&amp; !empty($data))<br>
+{<br>
+echo “[";<br>
+for($i=0;$iconfig&gt;item("base_url")."tasks/view/".$data[$i]['category_id'].”/”.$data[$i]['id'].”/home\”";<br>
+if($i == count($data)-1)<br>
+echo “}”;<br>
+else<br>
+echo “},”;<br>
+}<br>
+echo ‘]’;</p>
+</div>
+
+		<div class="reply">
+			<a class="comment-reply-link" href="/2013/01/09/bootstrap-typeahead/?replytocom=7417#respond" onclick="return addComment.moveForm(&quot;comment-7417&quot;, &quot;7417&quot;, &quot;respond&quot;, &quot;811&quot;)">Reply</a>		</div><!-- .reply -->
+	</div><!-- #comment-##  -->
+
+	</li>
+	
+	</ol>
+
+	
+								<div id="respond">
+				<h3 id="reply-title">Leave a Reply <small><a rel="nofollow" id="cancel-comment-reply-link" href="/2013/01/09/bootstrap-typeahead/#respond" style="display:none;">Cancel reply</a></small></h3>
+									<form action="http://blattchat.com/wp-comments-post.php" method="post" id="commentform">
+																			<p class="comment-notes">Your email address will not be published. Required fields are marked <span class="required">*</span></p>							<p class="comment-form-author"><label for="author">Name <span class="required">*</span></label> <input id="author" name="author" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-email"><label for="email">Email <span class="required">*</span></label> <input id="email" name="email" type="text" value="" size="30" aria-required="true"></p>
+<p class="comment-form-url"><label for="url">Website</label><input id="url" name="url" type="text" value="" size="30"></p>
+												<p class="comment-form-comment"><label for="comment">Comment</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>						<p class="form-allowed-tags">You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:  <code>&lt;a href="" title=""&gt; &lt;abbr title=""&gt; &lt;acronym title=""&gt; &lt;b&gt; &lt;blockquote cite=""&gt; &lt;cite&gt; &lt;code&gt; &lt;del datetime=""&gt; &lt;em&gt; &lt;i&gt; &lt;q cite=""&gt; &lt;strike&gt; &lt;strong&gt; </code></p>						<p class="form-submit">
+							<input name="submit" type="submit" id="submit" value="Post Comment">
+							<input type="hidden" name="comment_post_ID" value="811" id="comment_post_ID">
+<input type="hidden" name="comment_parent" id="comment_parent" value="0">
+						</p>
+						<p style="display: none;"><input type="hidden" id="akismet_comment_nonce" name="akismet_comment_nonce" value="f453e0a53f"></p>
+
+	<p style="clear: both;" class="subscribe-to-comments">
+	<input type="checkbox" name="subscribe" id="subscribe" value="subscribe" style="width: auto;">
+	<label for="subscribe">Notify me of followup comments via e-mail</label>
+	</p>
+
+
+					</form>
+							</div><!-- #respond -->
+			        <script type="text/javascript">
+            jQuery(document).ready(function () {
+                jQuery('#commentform').submit(function () {
+                    _gaq.push(
+                            ['_setAccount', 'UA-29857878-1'],
+                            ['_trackEvent', 'comment', 'submit']
+                    );
+                });
+            });
+        </script>
+					
+</div><!-- #comments -->
+
+
+						</div><!-- #content -->
+			<div id="primary" class="widget-area" role="complementary">
+		
+				
+			<ul class="xoxo">
+				<li id="search-2" class="widget-container widget_search"> 
+<form method="get" id="searchform" action="http://blattchat.com//">
+<input type="text" value="Search" name="s" id="s" onblur="if (this.value == '')
+{this.value = 'Search';}" onfocus="if (this.value == 'Search')
+{this.value = '';}">
+<input type="submit" id="searchsubmit" value="OK">
+</form></li>		<li id="recent-posts-3" class="widget-container widget_recent_entries">		<h3 class="widget-title">Recent Posts</h3>		<ul>
+					<li>
+				<a href="http://blattchat.com/2013/07/13/fun-with-svg-filters/" title="Fun with SVG Filters">Fun with SVG Filters</a>
+						</li>
+					<li>
+				<a href="http://blattchat.com/2013/06/26/the-state-of-css-graphics/" title="The state of CSS &amp; Graphics">The state of CSS &amp; Graphics</a>
+						</li>
+					<li>
+				<a href="http://blattchat.com/2013/06/11/understanding-compositing-blending/" title="Understanding Compositing and Blending">Understanding Compositing and Blending</a>
+						</li>
+					<li>
+				<a href="http://blattchat.com/2013/06/10/css-exclusions-shapes-split-specs/" title="CSS Exclusions and Shapes Split Into 2 Specs">CSS Exclusions and Shapes Split Into 2 Specs</a>
+						</li>
+					<li>
+				<a href="http://blattchat.com/2013/06/04/twitter-bootstrap-typeahead-js-with-underscore-js-tutorial/" title="Twitter Bootstrap typeahead.js with underscore.js Templating – A Tutorial">Twitter Bootstrap typeahead.js with underscore.js Templating – A Tutorial</a>
+						</li>
+				</ul>
+		</li><li id="tag_cloud-4" class="widget-container widget_tag_cloud"><h3 class="widget-title">Tags</h3><div class="tagcloud"><a href="http://blattchat.com/tag/3d/" class="tag-link-30" title="1 topic" style="font-size: 8pt;">3d</a>
+<a href="http://blattchat.com/tag/actionscript/" class="tag-link-17" title="1 topic" style="font-size: 8pt;">ActionScript</a>
+<a href="http://blattchat.com/tag/adobe/" class="tag-link-13" title="5 topics" style="font-size: 16.615384615385pt;">adobe</a>
+<a href="http://blattchat.com/tag/animation/" class="tag-link-26" title="1 topic" style="font-size: 8pt;">animation</a>
+<a href="http://blattchat.com/tag/apache/" class="tag-link-12" title="3 topics" style="font-size: 13.384615384615pt;">apache</a>
+<a href="http://blattchat.com/tag/architecture/" class="tag-link-43" title="3 topics" style="font-size: 13.384615384615pt;">architecture</a>
+<a href="http://blattchat.com/tag/autocomplete/" class="tag-link-48" title="1 topic" style="font-size: 8pt;">autocomplete</a>
+<a href="http://blattchat.com/tag/backbone/" class="tag-link-18" title="4 topics" style="font-size: 15.179487179487pt;">Backbone</a>
+<a href="http://blattchat.com/tag/bootstrap/" class="tag-link-46" title="1 topic" style="font-size: 8pt;">bootstrap</a>
+<a href="http://blattchat.com/tag/chart/" class="tag-link-21" title="1 topic" style="font-size: 8pt;">chart</a>
+<a href="http://blattchat.com/tag/css/" class="tag-link-22" title="11 topics" style="font-size: 22pt;">css</a>
+<a href="http://blattchat.com/tag/curtains/" class="tag-link-42" title="1 topic" style="font-size: 8pt;">curtains</a>
+<a href="http://blattchat.com/tag/edge/" class="tag-link-51" title="2 topics" style="font-size: 11.230769230769pt;">edge</a>
+<a href="http://blattchat.com/tag/filterlab/" class="tag-link-39" title="2 topics" style="font-size: 11.230769230769pt;">FilterLab</a>
+<a href="http://blattchat.com/tag/filters/" class="tag-link-34" title="10 topics" style="font-size: 21.282051282051pt;">filters</a>
+<a href="http://blattchat.com/tag/flash/" class="tag-link-6" title="1 topic" style="font-size: 8pt;">flash</a>
+<a href="http://blattchat.com/tag/flex/" class="tag-link-3" title="6 topics" style="font-size: 17.871794871795pt;">flex</a>
+<a href="http://blattchat.com/tag/fragment/" class="tag-link-24" title="2 topics" style="font-size: 11.230769230769pt;">fragment</a>
+<a href="http://blattchat.com/tag/gis/" class="tag-link-5" title="1 topic" style="font-size: 8pt;">gis</a>
+<a href="http://blattchat.com/tag/graph/" class="tag-link-20" title="1 topic" style="font-size: 8pt;">graph</a>
+<a href="http://blattchat.com/tag/html/" class="tag-link-44" title="1 topic" style="font-size: 8pt;">html</a>
+<a href="http://blattchat.com/tag/javascript/" class="tag-link-16" title="3 topics" style="font-size: 13.384615384615pt;">JavaScript</a>
+<a href="http://blattchat.com/tag/maps/" class="tag-link-4" title="1 topic" style="font-size: 8pt;">maps</a>
+<a href="http://blattchat.com/tag/paper/" class="tag-link-8" title="1 topic" style="font-size: 8pt;">paper</a>
+<a href="http://blattchat.com/tag/photoshop/" class="tag-link-71" title="1 topic" style="font-size: 8pt;">photoshop</a>
+<a href="http://blattchat.com/tag/plugin/" class="tag-link-32" title="1 topic" style="font-size: 8pt;">plugin</a>
+<a href="http://blattchat.com/tag/presentation/" class="tag-link-36" title="2 topics" style="font-size: 11.230769230769pt;">presentation</a>
+<a href="http://blattchat.com/tag/reflection/" class="tag-link-15" title="1 topic" style="font-size: 8pt;">reflection</a>
+<a href="http://blattchat.com/tag/reveal/" class="tag-link-35" title="1 topic" style="font-size: 8pt;">reveal</a>
+<a href="http://blattchat.com/tag/reveal-js/" class="tag-link-37" title="2 topics" style="font-size: 11.230769230769pt;">reveal.js</a>
+<a href="http://blattchat.com/tag/roadmap/" class="tag-link-10" title="1 topic" style="font-size: 8pt;">roadmap</a>
+<a href="http://blattchat.com/tag/shaders/" class="tag-link-23" title="8 topics" style="font-size: 19.666666666667pt;">shaders</a>
+<a href="http://blattchat.com/tag/shadow/" class="tag-link-14" title="1 topic" style="font-size: 8pt;">shadow</a>
+<a href="http://blattchat.com/tag/svg/" class="tag-link-54" title="2 topics" style="font-size: 11.230769230769pt;">svg</a>
+<a href="http://blattchat.com/tag/techlive/" class="tag-link-52" title="2 topics" style="font-size: 11.230769230769pt;">TechLive</a>
+<a href="http://blattchat.com/tag/template/" class="tag-link-33" title="1 topic" style="font-size: 8pt;">template</a>
+<a href="http://blattchat.com/tag/twitter/" class="tag-link-45" title="1 topic" style="font-size: 8pt;">twitter</a>
+<a href="http://blattchat.com/tag/typeahead/" class="tag-link-47" title="1 topic" style="font-size: 8pt;">typeahead</a>
+<a href="http://blattchat.com/tag/vertex/" class="tag-link-40" title="1 topic" style="font-size: 8pt;">vertex</a>
+<a href="http://blattchat.com/tag/visualization/" class="tag-link-19" title="1 topic" style="font-size: 8pt;">visualization</a>
+<a href="http://blattchat.com/tag/w3c/" class="tag-link-77" title="2 topics" style="font-size: 11.230769230769pt;">w3c</a>
+<a href="http://blattchat.com/tag/webkit/" class="tag-link-25" title="7 topics" style="font-size: 18.769230769231pt;">webkit</a>
+<a href="http://blattchat.com/tag/white/" class="tag-link-7" title="1 topic" style="font-size: 8pt;">white</a>
+<a href="http://blattchat.com/tag/whitepaper/" class="tag-link-9" title="1 topic" style="font-size: 8pt;">whitepaper</a>
+<a href="http://blattchat.com/tag/wordpress/" class="tag-link-31" title="5 topics" style="font-size: 16.615384615385pt;">wordpress</a></div>
+</li><li id="archives-3" class="widget-container widget_archive"><h3 class="widget-title">Archives</h3>		<ul>
+			<li><a href="http://blattchat.com/2013/07/" title="July 2013">July 2013</a></li>
+	<li><a href="http://blattchat.com/2013/06/" title="June 2013">June 2013</a></li>
+	<li><a href="http://blattchat.com/2013/05/" title="May 2013">May 2013</a></li>
+	<li><a href="http://blattchat.com/2013/04/" title="April 2013">April 2013</a></li>
+	<li><a href="http://blattchat.com/2013/03/" title="March 2013">March 2013</a></li>
+	<li><a href="http://blattchat.com/2013/02/" title="February 2013">February 2013</a></li>
+	<li><a href="http://blattchat.com/2013/01/" title="January 2013">January 2013</a></li>
+	<li><a href="http://blattchat.com/2012/12/" title="December 2012">December 2012</a></li>
+	<li><a href="http://blattchat.com/2012/11/" title="November 2012">November 2012</a></li>
+	<li><a href="http://blattchat.com/2012/10/" title="October 2012">October 2012</a></li>
+	<li><a href="http://blattchat.com/2012/09/" title="September 2012">September 2012</a></li>
+	<li><a href="http://blattchat.com/2012/08/" title="August 2012">August 2012</a></li>
+	<li><a href="http://blattchat.com/2012/07/" title="July 2012">July 2012</a></li>
+	<li><a href="http://blattchat.com/2012/06/" title="June 2012">June 2012</a></li>
+	<li><a href="http://blattchat.com/2012/05/" title="May 2012">May 2012</a></li>
+	<li><a href="http://blattchat.com/2012/03/" title="March 2012">March 2012</a></li>
+	<li><a href="http://blattchat.com/2012/02/" title="February 2012">February 2012</a></li>
+	<li><a href="http://blattchat.com/2012/01/" title="January 2012">January 2012</a></li>
+		</ul>
+</li>			</ul>
+
+			<ul class="xoxo">
+							</ul>
+			
+						
+		</div><!-- #primary .widget-area -->
+
+ <!-- 1c -->		</section><!-- #container -->
+
+	<div style="clear:both;"></div>
+
+	</div> <!-- #forbottom -->
+	</div><!-- #main -->
+
+
+	<footer id="footer" role="contentinfo">
+		<div id="colophon">
+		
+			
+			
+		</div><!-- #colophon -->
+
+		<div id="footer2">
+		
+				<div id="site-info">
+		<a href="http://blattchat.com/" title="Alan Greenblatt" rel="home">
+			Alan Greenblatt</a> | Powered by <a href="http://www.cryoutcreations.eu" title="Mantra Theme by Cryout Creations">Mantra</a> &amp; <a href="http://wordpress.org/" title="Semantic Personal Publishing Platform">  WordPress.		</a>
+	</div><!-- #site-info -->
+			
+		</div><!-- #footer2 -->
+
+	</footer><!-- #footer -->
+
+</div><!-- #wrapper -->
+
+<link rel="stylesheet" id="mantra-mobile-css" href="http://blattchat.com/wp-content/themes/mantra/style-mobile.css?ver=3.5.2" type="text/css" media="all">
+
+
+
+
+<!-- Dynamic page generated in 0.387 seconds. -->
+<!-- Cached page generated by WP-Super-Cache on 2013-07-13 01:34:48 -->
+
+<!-- super cache --></body><div style="margin: 50px 50px">
+    <label for="product_search">Product Search: </label>
+    <input id="product_search" type="text" data-provide="typeahead">
+</div><div style="margin: 50px 50px">
+    <label for="product_search">Product Search: </label>
+    <input id="product_search" type="text" data-provide="typeahead">
+</div><div style="margin: 50px 50px">
+    <label for="product_search">Product Search: </label>
+    <input id="product_search" type="text" data-provide="typeahead">
+</div><div style="margin: 50px 50px">
+    <label for="product_search">Product Search: </label>
+    <input id="product_search" type="text" data-provide="typeahead">
+</div><div style="margin: 50px 50px">
+    <label for="product_search">Product Search: </label>
+    <input id="product_search" type="text" data-provide="typeahead">
+</div>
+{{=BEAUTIFY(response._vars)}}

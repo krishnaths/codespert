@@ -319,4 +319,14 @@ li.w2p_grid_breadcrumb_elem {
 .showup{bottom:2px; right:5px; -webkit-transform:scale(0.8); -webkit-transform-origin:100% 100%; transform:scale(0.8); transform-origin:100% 100%; opacity:1.0; -webkit-transition:0.3s cubic-bezier(0.055, 0.6, 0.2, 1); transition:0.3s cubic-bezier(0.055, 0.6, 0.2, 1); }
 .showup:hover{ -webkit-transform:scale(1); transform:scale(1); opacity:1; }
 .showup{ text-transform:capitalize;  left:5px; font-size:20px; color:#FFF; text-decoration:none; font-family:'Fjalla One', sans-serif; -webkit-transform-origin:0% 100%; transform-origin:0% 100%; }
-
+.tagclass{
+background-color: #E7E7E7;
+border-bottom: 1px solid #d5d5d5;
+border-right: 1px solid #d5d5d5;
+padding: 3px 4px 3px 4px;
+margin: 2px 2px 2px 0;
+text-decoration: none;
+font-size: 90%;
+line-height: 2.4;
+white-space: nowrap;
+border-color: gray;}
