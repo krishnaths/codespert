@@ -1,62 +1,100 @@
 {{extend 'layout.html'}}
+<!-- <script src="{{=URL('static','js/jquery.js')}}"></script>
 
+<script src="{{=URL('static','js/swfobject.js')}}"></script>
+<script src="{{=URL('static','js/jquery.ytchromeless.js')}}"></script> -->
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+<link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" rel="stylesheet" />
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
+
+<script src="{{=URL('static','js/jquery.youtubepopup.js')}}"></script>
+
+<style type="text/css">
+    .video-player { margin: 20px; width: 640px; }
+    .video-controls { 
+      background: #dedede; 
+      height: 30px;
+      margin: -4px 0 0;
+      position: relative;
+      width: 640px;
+    }
+    .status { height: 20px; left: 30px; position: absolute; top: 5px; width: 455px; }
+    .bar { background: #a4a4a4; height: 10px; position: relative; top: 5px; }
+    .loaded { background: #bbb; height: 10px; left: 0; position: absolute; top: 0; }
+    .indicator { background: #212121; display: block; height: 10px; left: 0; position: absolute; top: 0; width: 20px; }
+    .play-pause, .volume { 
+      background: url(../static/images/btn-controls.png) no-repeat ;
+      display: block;
+      height: 20px;
+      overflow: hidden;
+      position: absolute;
+      text-indent: -9999px;
+      top: 5px;
+      width: 20px;
+    }
+    .play-pause { left: 5px; }
+    .playing { background-position: 0 -20px; }
+    .volume { background-position: 0 -60px; right: 130px; }
+    .muted { background-position: 0 -40px; }
+    .view-youtube { 
+      color: #000;
+      display: block; 
+      float: right; 
+      font-size: 9px; 
+      line-height: 30px;
+      padding: 0 5px 0 0;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    </style>
 <script type="text/javascript">
-$(document).ready(function(){
-$('a').click(function(){
-	if($(this).text() == "Perl")
-	{
-	$("#dvPerl").attr("visibility","visible");
-	$("#dvPerl").attr("display","block");
-	$("#dvFrames").html($("#dvPerl").html());
-	}
-	else if($(this).text() == "Python"){
-	console.log("python code");
-	$("#dvPython").attr("visibility","visible");
-        $("#dvPython").attr("display","block");
-        $("#dvFrames").html($("#dvPython").html());
-	}
-	else if($(this).text() == "Java"){
-	$("#dvJava").attr("visibility","visible");
-        $("#dvJava").attr("display","block");
-        $("#dvFrames").html($("#dvJava").html());
-	}
-	else if($(this).text() == "Unix"){
-        $("#dvUnix").attr("visibility","visible");
-        $("#dvUnix").attr("display","block");
-        $("#dvFrames").html($("#dvUnix").html());
-        }
-	else if($(this).text() == "Csharp"){
-        $("#dvCsharp").attr("visibility","visible");
-        $("#dvCsharp").attr("display","block");
-        $("#dvFrames").html($("#dvCsharp").html());
-        }
+$(function () {
+$("#Nc16qeGBtMU").YouTubePopup({ youtubeId: 'Nc16qeGBtMU', title: 'Python Tutorial' });
+$("#hrRV8Uj4y0o").YouTubePopup({ youtubeId: 'hrRV8Uj4y0o', title: 'Perl Tutorial' });
+$("#Cfd9DOnuF9w").YouTubePopup({ youtubeId: 'Cfd9DOnuF9w', title: 'Java Tutorial' });
+$("#OBsGRqXzOhk").YouTubePopup({ youtubeId: 'OBsGRqXzOhk', title: 'Csharp Tutorial' });
+$("#2O5XPNLQe30").YouTubePopup({ youtubeId: '2O5XPNLQe30', title: 'Unix Tutorial' });
+
 
 
 });
+$(document).ready(function(){
+
+
+
+
+
+
+
+$("#youtubeLink").YouTubePopup({ youtubeId: '4eYSpIz2FjU', title: 'My New Title' });
+
 });
 </script>
 
-<B><I>Which language would u like to learn?</I></B>
+<span class="traintext">Which programming language would u like to learn?</span>
 <table>
 <tr>
 <!-- <td><a href={{=URL('default','trainings/python')}}>Python</a></td> -->
-<td><a class="tagclass" onmouseover="" style="cursor: pointer;">Python</td>
+<td><a class="trainbtn" id ="Nc16qeGBtMU" onmouseover="" style="cursor: pointer;">Python</td>
 <!-- <td><a href="{{=URL('default','trainings/perl')}}">Perl</a></td> -->
-<td><a class="tagclass" onmouseover="" style="cursor: pointer;">Perl</a></td>
+<td><a class="trainbtn" id="hrRV8Uj4y0o" onmouseover="" style="cursor: pointer;">Perl</a></td>
 <!-- <td><a class="tagclass" href="{{=URL('default','trainings/java')}}">Java</a></td> -->
-<td><a class="tagclass" onmouseover="" style="cursor: pointer;">Java</a></td>
+<td><a class="trainbtn" id="Cfd9DOnuF9w" onmouseover="" style="cursor: pointer;">Java</a></td>
 <!-- <td><a href="{{=URL('default','trainings/csharp')}}">C#</a></td> -->
-<td><a class="tagclass" onmouseover="" style="cursor: pointer;">Csharp</a></td>
+<td><a class="trainbtn" id="OBsGRqXzOhk" onmouseover="" style="cursor: pointer;">Csharp</a></td>
 <!--<td><a href="{{=URL('default','trainings/unix')}}">Unix</a></td>-->
-<td><a class="tagclass" onmouseover="" style="cursor: pointer;">Unix</a></td>
+<td><a class="trainbtn" id="2O5XPNLQe30" onmouseover="" style="cursor: pointer;">Unix</a></td>
 </tr>
 </table>
 
 <div id=dvPerl style="visibility:hidden;display:none">
-<iframe width="300" height="200" src="http://www.youtube.com/embed/hrRV8Uj4y0o?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+
+<a id="4eYSpIz2FjU" class="youtube" href="#">Tutorial 1</a>
+<!--<iframe width="300" height="200" src="http://www.youtube.com/embed/hrRV8Uj4y0o?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
 <br/>
 <br/>
-<iframe width="300" height="200" src="http://www.youtube.com/embed/Nma5gVDIwtc?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
+<iframe width="300" height="200" src="http://www.youtube.com/embed/Nma5gVDIwtc?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>-->
 </div>
 <div id="dvPython" style="visibility:hidden;display:none">
 <iframe width="300" height="200" src="http://www.youtube.com/embed/Nc16qeGBtMU?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
@@ -83,6 +121,7 @@ $('a').click(function(){
 <iframe width="300" height="200" src="http://www.youtube.com/embed/G8vusfYhwgQ?feature=player_detailpage" frameborder="0" allowfullscreen></iframe>
 </div>
 <div id="dvFrames">
+
 
 </div>
 

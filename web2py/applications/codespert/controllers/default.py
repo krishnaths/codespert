@@ -82,7 +82,7 @@ def insertanswer():
             for rec in receivers:
                 receiver = rec.email
                 break
-            tkMessageBox.showinfo(receiver+'sd')
+            #tkMessageBox.showinfo(receiver+'sd')
             usrnm = db(db.auth_user.id == auth.user.id).select(db.auth_user.first_name)
             fname = ""
             for usr in usrnm:
@@ -124,7 +124,7 @@ def answer():
 	    arrtagids.append(tg.id)
 
 	#    arrtagnames.append(tgname.name)
-    tkMessageBox.showinfo('tagnames'+str(arrtagnames))
+    #tkMessageBox.showinfo('tagnames'+str(arrtagnames))
 	 
     answers = db(db.Answer.qid == request.args(0)).select(db.Answer.answer)
     answerers = db(db.Answer.qid == request.args(0))(db.Answer.byid == db.auth_user.id).select(db.Answer.answer,db.auth_user.first_name) 
@@ -145,7 +145,7 @@ def answer():
     
     if form.accepts(request,session):
 	try:
-            tkMessageBox.showinfo("inside post")        
+            #tkMessageBox.showinfo("inside post")        
             valText = form.vars.txtAns.replace('/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g', '<br />')
             
             ret = db.Answer.insert(qid=request.args(0),answer=valText,byid=auth.user.id)
@@ -200,7 +200,7 @@ def listqs():
         for qtagname in db(db.Tags.id == tid).select(db.Tags.name):
             qtagnames = qtagname.name
             
-        tkMessageBox.showinfo(str(type(request.vars['tid']))+"type")
+        #tkMessageBox.showinfo(str(type(request.vars['tid']))+"type")
         arrQids = []
         arrTids = []
         arrQues = []
@@ -209,10 +209,10 @@ def listqs():
         
         for qst in quests:
             arrqTids = qst.tag.split('|')
-            tkMessageBox.showinfo(str(arrqTids)+"arrqTids")
+            #tkMessageBox.showinfo(str(arrqTids)+"arrqTids")
             if tid in arrqTids:
                 arrQids.append(qst.id)
-        tkMessageBox.showinfo(str(arrQids)+"arrqids")
+        #tkMessageBox.showinfo(str(arrQids)+"arrqids")
         rows = quests.find(lambda row: row.id in arrQids)
         #for row in rows:
         #    tkMessageBox.showinfo(row.question)

@@ -1,0 +1,6 @@
+$(document).ready(function(){
+ $('input').click(function(){
+ console.log(123);
+ //$("#txt").slideToggle("slow");
+ //});
+ });

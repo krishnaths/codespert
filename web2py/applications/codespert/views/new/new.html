@@ -1,0 +1,58 @@
+{{extend 'layout.html'}}
+ <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css" />
+  <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>
+<script>
+$("#btnCode").removeClass("btn");
+</script>
+<body>
+{{=form}}
+<div id="dvTags">
+<label class="lblclass">This is a sample label</label>
+<div>
+<script>
+$(document).ready(function(){
+    $("label.lblclass").click(function(){
+        console.log($(this).text());
+        $("#tag").val($("#tag").val()+','+$(this).text());
+        });
+    $("#tag").click(function(){
+        
+        console.log("hello");
+     $( "#dvTags" ).dialog({
+     resizable: false,
+      height:200,
+      modal: true,
+      buttons: {
+        "Delete all items": function() {
+          $( this ).dialog( "close" );
+        },
+        Cancel: function() {
+          $( this ).dialog( "close" );
+        }
+      }
+    });
+     
+     });
+    
+   $("#dvTags").hide(); 
+   $("#txtQues").width("900px");
+    $("#txtQues").attr('maxlength','300');
+ $("#lbldetail").fadeToggle("fast");
+ $("#code").fadeToggle("fast");
+
+ $("#btnCode").width("160px");
+ $("#btnCode").click(function(){
+ $("#code").fadeToggle("slow");
+ //Setting the dialog space
+ 
+ 
+
+ 
+ $("#lbldetail").fadeToggle("slow");
+ });
+ });
+</script>
+</body>
+<script>
+$("#btnCode").removeClass("btn");
+</script>

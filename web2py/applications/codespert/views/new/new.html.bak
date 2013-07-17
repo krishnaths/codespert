@@ -1,0 +1,10 @@
+{{extend 'layout.html'}}
+<script>
+$(document).ready(function(){
+ $("#btn").click(function(){
+ $("#code").fadeToggle("slow");
+ });
+ });
+</script>
+<p style="color:white;">Question:</p><br/>
+{{=form}}

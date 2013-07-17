@@ -1,0 +1,5 @@
+{{extend 'layout.html'}}
+<p>Your Question:</p><br/>
+<h1>{{=session.sometext or "anonymous"}}</h1><br/>
+<p>Your Code:</p><br/>
+<h1>{{=session.text1 or "anonymous"}}</h1>
