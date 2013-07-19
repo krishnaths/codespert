@@ -248,7 +248,7 @@ def index():
     return auth.wiki()
     """
     response.flash = T("Welcome to Codespert!")
-    #redirect(URL('static','codespert.html'))
+    redirect(URL('static','codespert.html'))
     return dict()
 
 

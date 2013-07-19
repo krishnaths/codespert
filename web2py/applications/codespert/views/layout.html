@@ -69,7 +69,13 @@
        uncomment to load jquery-ui //-->
   <noscript><link href="{{=URL('static', 'css/web2py_bootstrap_nojs.css')}}" rel="stylesheet" type="text/css" /></noscript>
   {{block head}}{{end}}
-
+	<script>
+		$(document).ready(function(){
+			console.log(123);
+			$(".brand").hide();
+			$('a[href="http://web2py.com"]').hide();
+			});
+	</script>
  
 
 
