@@ -12,20 +12,27 @@ from gluon.tools import Mail
 from Tkinter import *
 import tkMessageBox
 import logging
-import json
+import json 
 
 @auth.requires_login()
+def ajaxsearch():
+    return dict()
+
+    
+@auth.requires_login()
 def getqs():
-    tkMessageBox.showinfo('asdasd')
-    questions = db().select(db.UsrQst.question)
+    #tkMessageBox.showinfo('asdasd')
+    questions = db().select(db.UsrQst.ALL)
     arrqs = []
+    arrids = []
     for ques in questions:
 #	tkMessageBox.showinfo(ques.question)
 	arrqs.append(ques.question)
-    arrqs = [{ 'id': 1, 'name': 'Toronto' },{ 'id': 2, 'name': 'Montreal' }]
+	arrids.append(ques.id)
+    
     #data = json.loads(arrqs)
     #tkMessageBox.showinfo(data)
-    return json.dumps(arrqs)
+    return dict(arrqs=arrqs,arrids=arrids)
     #return dict(value=arrqs)
 
 
@@ -48,7 +55,7 @@ def mailit(qid):
     Message = "One of your questions has been answered by "+usrnm 
     #.Please click the link below.\nhttp://127.0.0.1:8000/codespert/default/answer/"+str(qid)"+\n\nregards\nCodespert Team"
 
-    var = mail.send('sankaran458@gmail.com', 'hello',Message)
+    var = mail.send('sankaran458@gmail.com', 'Hurray you have an answer!!!',Message)
 
     if var == 1:
 
@@ -89,9 +96,9 @@ def insertanswer():
                 fname = usr.first_name
                 break
             Message = "Dear Codepsert,\n\t"
-            Message += "One of your questions has been answered by "+fname.upper()+".Please click the link below.\nhttp://127.0.0.1:8000/codespert/default/answer/"+str(quesid)+"\n\nregards\nCodespert Team"
+            Message += "\tOne of your questions has been answered by "+fname.upper()+".Please click the link below to view the solution.\nhttp://127.0.0.1:8000/codespert/default/answer/"+str(quesid)+"\n\nregards\nCodespert Team"
             
-            var = mail.send(receiver, 'hello',Message)
+            var = mail.send(receiver, 'Hurray you have an answer!!!',Message)
             
             response.flash = "created post"
             return True
@@ -240,9 +247,9 @@ def index():
     if you need a simple wiki simple replace the two lines below with:
     return auth.wiki()
     """
-    response.flash = T("Welcome to web2py!")
-    redirect(URL('static','codespert.html'))
-    return dict(message=T('Hello World'))
+    response.flash = T("Welcome to Codespert!")
+    #redirect(URL('static','codespert.html'))
+    return dict()
 
 
 def user():

@@ -1,0 +1,11 @@
+{{extend 'layout.html'}}
+<h1>This is the ajaxsearch.html template</h1>
+<script>
+    $(document).ready(function(){
+    console.log("hello");
+    
+    });
+</script>
+<div id="dvres">
+</div>
+{{=BEAUTIFY(response._vars)}}

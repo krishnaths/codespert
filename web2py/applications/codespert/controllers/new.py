@@ -11,7 +11,7 @@ def new():
               TEXTAREA(_name='txtCode',_id="code"),
               LABEL('Tags',_class="traintext"),BR(),INPUT(_name='tagname',_id="tag",requires=IS_NOT_EMPTY()),BR(),
               INPUT(_type='submit',_id="btnSubmit"))
-    
+    tagnamelist = db().select(db.Tags.ALL)
     if form.process().accepted:
 	arrtag = []
 	arrtagids = []
@@ -45,7 +45,7 @@ def new():
             redirect(URL('../../default/answer/'+str(retqid.id))) 
                 
         #redirect(URL('second'))
-    return dict(form=form)
+    return dict(form=form,tagnamelist =tagnamelist)
 
     
 """def first():

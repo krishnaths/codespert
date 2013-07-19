@@ -1,0 +1,59 @@
+{{extend 'layout.html'}}
+
+<script>
+$(function() {
+$("label.reslist").click(function(e){
+        alert('created a query');
+        });
+});
+
+    $(document).ready(function(){
+        
+    console.log("hello");
+    
+    
+    $("#insearch").keyup(function(){
+
+        console.log(123);
+
+         $.getJSON("getqs.json",function(result){
+             
+             $("#dvres").html("");
+
+             
+             for(i=0;i<result.arrqs.length;i++){
+                 console.log('insdide');
+                 if(result.arrqs[i].toLowerCase().indexOf($("#insearch").val().toLowerCase()) != -1)
+                 {
+                 anchor = '<label class="reslist" style="font-family:fantasy;color:#12c" onclick="showhi(this.id)" id='+result.arrids[i]+'>'+"   "+result.arrqs[i]+'</label>'
+                 $("#dvres").append(anchor);
+                 }
+                // console.log(anchor);
+                 }
+           
+             
+             });
+
+        
+                            });
+    });
+</script>
+<script>
+function showhi(idy){
+    //loc = window.location.origin+"/codespert/default/answer/"+idy;
+    //window.location = loc;
+     window.open(window.location.origin+"/codespert/default/answer/"+idy);
+    }
+</script>
+<section>
+<div align="center" id="dvinput"><label for="cdcode" class="traintext1" style="font-family:cursive;width:500px;" >Search Existing Knowledge with our Quoogle</label></div>
+<br/>
+<div align="center"><input id="insearch" type="text" class="traintext1" style="width:700px;"></input></div>
+
+
+
+</section>
+<section>
+<div id="dvres"  height="400px" style="background-color:#FFF;width:700px;margin-left:auto;margin-right:auto;"></div>
+</section>
+{{=BEAUTIFY(response._vars)}}

@@ -9,6 +9,7 @@ $(document).ready(function(){
     $('#txtAnswers').css("width","1000");
     $('#txtAnswers').attr("maxlength","2000");
     $('#txtAnswers').attr("class","noTextClear");
+    $('a.tagclass').css("cursor","pointer");
 $('.tagclass').click(function(e){
      console.log(34);
   loc = window.location.origin+"/codespert/default/listqs?tid="+this.id
@@ -19,7 +20,13 @@ $('.tagclass').click(function(e){
 $('#btnsubmit').click(function(e){
 	
 	e.preventDefault();
-        
+        if($("#txtAnswers").val() == "" || $("#txtAnswers").val() == " ")
+        {
+            console.log(1221323);
+            e.stopPropagation();
+            alert("Please enter a solution before you submit!!!");
+            return;
+            }
         value = ($('textarea#txtAnswers').val());//.replace(/([^>\r\n]?)(\r\n|\n\r|\r|\n)/g, '<br />');
         
         
@@ -86,12 +93,14 @@ $('#btnsubmit').click(function(e){
 <p "font-family:COMIC SANS MS;font-size:30"><code>Question Not Found</code></p>
 {{else:}}
 <section>
-<label style="color:#FFF;font-family:COMIC SANS MS;">Question</lable>
-<p style="color:#FFF;font-family:COMIC SANS MS;font-size:30">{{=qstion}}</p>
+<label style="font-family: cursive"  class="traintext" >Question</label>
+<p style="color:#FFF;font-family:COMIC SANS MS;font-size:40">{{=qstion}}</p>
 {{for i in range(len(tagnames)):}}
 <a id="{{=tagids[i]}}" class="tagclass" height="10px" width="10px">{{=tagnames[i]}}</a>
 {{pass}}
-<label for="cdcode" style="font-family:cursive">Code</label>
+<br/>
+<br/>
+<label for="cdcode" class="traintext" style="font-family:cursive">Code and Detailed Query</label>
 <p>
 {{if code == None or code == "":}}
 <code>No code submitted for review</code>
@@ -113,7 +122,7 @@ $('#btnsubmit').click(function(e){
 </div>
 </section>
 <section>
-<label style="font-family:COMIC SANS MS;">Answers</label>
+<label style="color:#FFF;font-family: cursive;font-size: 20px;">Answers</label>
 <!--<textarea id="txtarea" width="10px" placeholder="Your answer here please"></textarea>
 </section>
 <button height="10px" width="10px">post</button>-->
