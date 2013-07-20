@@ -21,9 +21,9 @@ def new():
         #insert value into db for questions
         
         tags = form.vars.tagname
-	tkMessageBox.showinfo("hi",tags)
+#	tkMessageBox.showinfo("hi",tags)
         arrtag=tags.split(",")
-        tkMessageBox.showinfo("hi2",arrtag)
+ #       tkMessageBox.showinfo("hi2",arrtag)
 	for i in arrtag:
             for row in db(db.Tags.name.lower() == i.lower()).select(db.Tags.id):
                 arrtagids.append(row.id)
@@ -34,12 +34,12 @@ def new():
                 strtagids = str(strtagids)+"|"+str(arrtagids[j])
         if strtagids == "":
             response.flash = "Enter atleast one valid tag"
-            tkMessageBox.showinfo("stringids",strtagids)
+  #          tkMessageBox.showinfo("stringids",strtagids)
         else:
             #Now insert into db
             retqid = db.UsrQst.insert(question=Question,usrid=auth.user.id,tag=strtagids)
-            tkMessageBox.showinfo("retqid",retqid.id)
-            tkMessageBox.showinfo("retqid",form.vars.id)
+   #         tkMessageBox.showinfo("retqid",retqid.id)
+    #        tkMessageBox.showinfo("retqid",form.vars.id)
             if Code != "":
                 retcodeid = db.Codes.insert(qid=retqid,Code=Code)
             redirect(URL('../../default/answer/'+str(retqid.id))) 
