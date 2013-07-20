@@ -1,4 +1,4 @@
-x{{extend 'layout.html'}}
+{{extend 'layout.html'}}
 <!-- <script src="{{=URL('static','js/jquery.js')}}"></script>
 
 <script src="{{=URL('static','js/swfobject.js')}}"></script>
@@ -7,10 +7,14 @@ x{{extend 'layout.html'}}
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
 <link type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/redmond/jquery-ui.css" rel="stylesheet" />
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
-
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js?1.25.0"></script>
 <script src="{{=URL('static','js/jquery.youtubepopup.js')}}"></script>
 
 <style type="text/css">
+	circle {
+  fill: none;
+  stroke-width: 1.5px;
+}
     .video-player { margin: 20px; width: 640px; }
     .video-controls { 
       background: #dedede; 
@@ -72,11 +76,6 @@ $("#on9Wcj_5iSo").YouTubePopup({ youtubeId: 'on9Wcj_5iSo', title: 'JQUERY Tutori
 
 });
 $(document).ready(function(){
-
-
-
-
-
 
 
 $("#youtubeLink").YouTubePopup({ youtubeId: '4eYSpIz2FjU', title: 'My New Title' });

@@ -15,6 +15,24 @@ import logging
 import json 
 
 @auth.requires_login()
+def userlist():
+    return dict()
+    
+@auth.requires_login()
+def getuser():
+##    tkMessageBox.showinfo("isassa")
+    if(request.args(0) == "" or request.args(0) is None):
+        tkMessageBox.showinfo("i s")
+        users = db().select(db.auth_user.ALL)
+    else:
+        strmatch = request.args(0)
+##        tkMessageBox.showinfo("12324",strmatch)
+        userlist = db().select(db.auth_user.ALL)
+        users = userlist.find(lambda row:(row.first_name.lower().find(strmatch.lower()) != -1 or row.last_name.lower().find(strmatch.lower()) != -1))
+    return dict(users=users)
+    
+
+@auth.requires_login()
 def ajaxsearch():
     return dict()
 

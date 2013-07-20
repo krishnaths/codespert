@@ -7,7 +7,7 @@ import tkMessageBox
 def new():
     form=FORM(LABEL('Enter your question here',_class="traintext"),INPUT(_type='text',_name='txtQues',_id="txtQues",  requires=IS_NOT_EMPTY()),BR(),
               A('Detail your Question',_id="btnCode",_class="trainbtn"),BR(),BR(),
-              LABEL('Please detail your question and add some code if u wud like to',_class="traintext",_id="lbldetail"),
+              LABEL('Please detail your question and add some code if u would like to',_class="traintext",_id="lbldetail"),
               TEXTAREA(_name='txtCode',_id="code"),
               LABEL('Tags',_class="traintext"),BR(),INPUT(_name='tagname',_id="tag",requires=IS_NOT_EMPTY()),BR(),
               INPUT(_type='submit',_id="btnSubmit"))

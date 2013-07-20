@@ -1,0 +1,45 @@
+{{extend 'layout.html'}}
+<script>
+$(function(){
+    
+    $("#txtsrch").keyup(function(){
+        if($("#txtsrch").val() == ""){
+        console.log(234);
+        }
+        $('#dvUsers').html(" ");
+        $.getJSON("../getuser.json/"+$("#txtsrch").val(),function(result){
+             console.log(result.users);
+             namey = "hiddivid"
+             for(var i=0;i<result.users.length;i++){
+                     console.log(result.users[i]);
+                     lbl= '<span class="showup" hiddivid="'+result.users[i].id+'" onclick="fnhideshow(document.getElementById(this.getAttribute(namey)));" style="color: rgb(8, 48, 71); font-family: cursive; cursor: pointer;" ><pre>'+result.users[i].first_name+' '+result.users[i].last_name+'</pre></span>'
+                     lbl = lbl + '<div id="'+result.users[i].id+'" style="display:none"><pre><label> First name:'+result.users[i].first_name+'</label><label> Last name:'+result.users[i].last_name+'</label><label><a href="mailto:'+result.users[i].email+'">EmailId:'+result.users[i].email+'</a></label></pre></div>'
+                     $('#dvUsers').append(lbl);
+                 }
+         });
+        });
+    
+    });
+function fnhideshow(element){
+     $(element).fadeToggle("slow");
+    }
+$(document).ready(function(){
+    
+    
+    $.getJSON("../getuser.json",function(result){
+             console.log(result.users);
+             namey = "hiddivid"
+             for(var i=0;i<result.users.length;i++){
+                     console.log(result.users[i]);
+                     lbl= '<span class="showup" hiddivid="'+result.users[i].id+'" onclick="fnhideshow(document.getElementById(this.getAttribute(namey)));" style="color: rgb(8, 48, 71); font-family: cursive; cursor: pointer;" ><pre>'+result.users[i].first_name+' '+result.users[i].last_name+'</pre></span>'
+                     lbl = lbl + '<div id="'+result.users[i].id+'" style="display:none"><pre><label> First name:'+result.users[i].first_name+'</label><label> Last name:'+result.users[i].last_name+'</label><label><a href="mailto:'+result.users[i].email+'">EmailId:'+result.users[i].email+'</a></label></pre></div>'
+                     $('#dvUsers').append(lbl);
+                 }
+         });
+
+    });
+</script>
+<div><input id="txtsrch" maxlength="40" type="text" ></div>
+<div id="dvUsers">
+</div>
+{{=BEAUTIFY(response._vars)}}
