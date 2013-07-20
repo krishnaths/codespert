@@ -23,7 +23,7 @@ p10
 cdatetime
 datetime
 p11
-(S'\x07\xdd\x07\x14\x08\x03+\x01Z\x96'
+(S'\x07\xdd\x07\x14\x08)6\t\xda\xfd'
 tRp12
 sS'user'
 p13
@@ -103,7 +103,7 @@ NsS'flash'
 p48
 NsS'_session_hash'
 p49
-S'a3412adf82ec623600924d8b475f7ca8'
+S'2f1f2fde3aad3db22b607b65434bb05f'
 p50
 sS'_formkey[login]'
 p51

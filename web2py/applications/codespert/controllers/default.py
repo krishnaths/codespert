@@ -22,7 +22,7 @@ def userlist():
 def getuser():
 ##    tkMessageBox.showinfo("isassa")
     if(request.args(0) == "" or request.args(0) is None):
-        tkMessageBox.showinfo("i s")
+#        tkMessageBox.showinfo("i s")
         users = db().select(db.auth_user.ALL)
     else:
         strmatch = request.args(0)

@@ -15,11 +15,11 @@ $("label.reslist").click(function(e){
     $("#insearch").keyup(function(){
 
         console.log(123);
-
+        $("#dvres").html("");
          $.getJSON("getqs.json",function(result){
              
-             $("#dvres").html("");
-
+             
+        if($("#insearch").val() != ""){
              
              for(i=0;i<result.arrqs.length;i++){
                  console.log('insdide');
@@ -31,7 +31,7 @@ $("label.reslist").click(function(e){
                 // console.log(anchor);
                  }
            
-             
+             }
              });
 
         
