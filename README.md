@@ -30,8 +30,8 @@ Dependencies: - python2.7 or more
 How to run the project:
 ======================
 Download the zip folder of our project from GITHUB page.
-Navigate to the web2py folder in command prompt
-Enter "Python web2py.py" to start running the web2py server
+Navigate to the web2py folder in command prompt.
+Enter "Python web2py.py" to start running the web2py server.
 Enter any password in the start/stop server page.
-When the browser opens with the default website , edit the address as "http://machinename:port/codespert"
+When the browser opens with the default website , edit the address as "http://machinename:port/codespert".
 
