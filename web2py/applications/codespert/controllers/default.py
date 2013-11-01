@@ -101,7 +101,8 @@ def insertanswer():
             mail.settings.server = 'smtp.gmail.com:587'
             mail.settings.sender = 'evtmng@gmail.com'
             mail.settings.tls = True
-            mail.settings.login = 'evtmng@gmail.com:th1s1smypass'
+           #mail.settings.login = 'evtmng@gmail.com:th1s1smypass'
+            mail.settings.login = ''
             receiver = ""
             receivers = db(db.UsrQst.id == quesid)(db.UsrQst.usrid == db.auth_user.id).select(db.auth_user.email)
             for rec in receivers:
